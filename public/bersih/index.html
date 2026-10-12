@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BERSIH: Every photo has two sides</title>
+  <meta name="description" content="BERSIH makes a clean copy from the share sheet: the front goes out, while the location, time and phone details stay on the original.">
+  <meta name="theme-color" content="#f4f4f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c1c1e" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="BERSIH: Every photo has two sides">
+  <meta property="og:description" content="BERSIH makes a clean copy from the share sheet: the front goes out, while the location, time and phone details stay on the original.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/app-icon.svg">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,600,0..1,0&display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Caveat:wght@500;600&family=Inter:opsz,wght@14..32,400..700&display=swap">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>:root {
+  --brand: #D9452B;
+  --brand-2: #24408E;
+  --color-fill-0: #F2E9D9;
+  --color-fill-1: #E8E2D8;
+  --color-fill-2: #E9DDCB;
+  --color-fill-3: #D9CCB8;
+  --color-card: #F2E9D9;
+  --color-inset: #E9DDCB;
+  --color-text-primary: #1A1714;
+  --color-text-secondary: #5E554A;
+  --color-text-tertiary: #9A8F80;
+  --color-hairline: rgb(26 23 20 / .13);
+  --color-brand: #D9452B;
+  --color-on-brand: #FFF7EA;
+  --shadow-card: 0 0 0 1px rgb(26 23 20 / .08), 0 24px 60px -38px rgb(26 23 20 / .38);
+  --shadow-float: 0 0 0 1px rgb(26 23 20 / .10), 0 18px 36px -22px rgb(26 23 20 / .45);
+  --font-text: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Barlow Condensed", "Inter", sans-serif;
+  --font-rounded: "Caveat", "Inter", sans-serif;
+  color-scheme: light;
+  --accent-blue: #24408E;
+  --accent-green: #56735D;
+  --accent-indigo: #5A4FA6;
+  --accent-mint: #F2E9D9;
+  --accent-orange: #D9452B;
+  --accent-pink: #B98772;
+  --accent-purple: #5A4FA6;
+  --accent-red: #D9452B;
+}</style>
+  <script>if (scrollY < 8) document.documentElement.classList.add("nav-top");</script>
+</head>
+<body data-app="bersih">
+  <div class="nav-spacer"></div>
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="app-identity" href="index.html">
+        <span>BERSIH</span>
+        <img class="app-icon" src="assets/app-icon.svg" alt="">
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a class="button" href="#waitlist">Join waitlist</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===================== Hero ===================== -->
+    <section class="hero" id="waitlist">
+      <div class="hero-content">
+        <h1>The front is for everyone.<br>The back is just for you.</h1>
+        <p>BERSIH keeps the memory on your original and sends out a clean copy with the location, time and phone details removed.</p>
+        <div class="waitlist-wrap">
+          <form class="waitlist" action="api/join" method="post" data-waitlist data-source="hero">
+            <input type="hidden" name="source" value="hero">
+            <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+            <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
+            <button class="button" type="submit">Join the waitlist</button>
+          </form>
+        </div>
+        <span class="hero-note">No spam. One email when early access opens.</span>
+      </div>
+
+      <div class="hero-media">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="phone">
+          <div class="phone-screen has-shot">
+            <div class="shot"><img src="assets/screens/hero.png" alt="BERSIH: Clean copy ready" loading="lazy"></div>
+          </div>
+        </div>
+        <div class="float-chip chip-streak" aria-hidden="true">
+          <span class="chip-icon icon" style="--c: var(--accent-red)">ios_share</span>
+          <div><b class="rounded">Share sheet</b><small>Two extra taps</small></div>
+        </div>
+        <div class="float-chip chip-done" aria-hidden="true">
+          <span class="chip-icon icon" style="--c: var(--accent-blue)">edit_note</span>
+          <div><b class="rounded">Back kept</b><small>Original unchanged</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Features ===================== -->
+    <section class="section" id="features">
+      <div class="section-head">
+        <span class="eyebrow">Features</span>
+        <h2 class="section-title">The words go home<br>before the photo leaves.</h2>
+      </div>
+      <div class="card-grid">
+        <figure class="card third" style="--k: var(--accent-red)">
+          <figcaption class="card-text">
+            <span class="kicker">Two sides</span>
+            <h2>A photo turns over like a print</h2>
+            <p>The front is the image. The back is where the private details were written.</p>
+          </figcaption>
+          <div class="card-media peek peek-1">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-1.png" alt="BERSIH: A photo turns over like a print" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="card two-thirds" style="--k: var(--accent-blue)">
+          <figcaption class="card-text">
+            <span class="kicker">Metadata</span>
+            <h2>Where, when, and on which phone</h2>
+            <p>Location, date, time, device, camera and software details are shown in plain language.</p>
+          </figcaption>
+          <div class="card-media peek peek-2">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-2-1.png" alt="BERSIH: The back of the print" loading="lazy"></div>
+            </div>
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-2-2.png" alt="BERSIH: Hidden fields" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="card half" style="--k: var(--accent-orange)">
+          <figcaption class="card-text">
+            <span class="kicker">The peak</span>
+            <h2>The words go home</h2>
+            <p>A clean reprint slides out. The private words lift off the copy and settle back onto the original.</p>
+          </figcaption>
+          <div class="card-media peek peek-1">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-3.png" alt="BERSIH: The words go home" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="card half" style="--k: var(--accent-purple)">
+          <figcaption class="card-text">
+            <span class="kicker">Share sheet</span>
+            <h2>Clean where she already shares</h2>
+            <p>Pick Clean Copy from the share sheet, then send the copy to the app she was already using.</p>
+          </figcaption>
+          <div class="card-media peek peek-1">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-4.png" alt="BERSIH: Clean where she already shares" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="card two-thirds" style="--k: var(--accent-green)">
+          <figcaption class="card-text">
+            <span class="kicker">Original kept</span>
+            <h2>Nothing is lost from her memory</h2>
+            <p>Her library keeps the photo with its back intact. Only the copy has a blank back.</p>
+          </figcaption>
+          <div class="card-media peek peek-2">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-5-1.png" alt="BERSIH: Original with back" loading="lazy"></div>
+            </div>
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-5-2.png" alt="BERSIH: Clean reprint" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="card third" style="--k: var(--accent-pink)">
+          <figcaption class="card-text">
+            <span class="kicker">After the first time</span>
+            <h2>Two seconds</h2>
+            <p>Once she knows the move, cleaning adds only a few seconds to a normal share.</p>
+          </figcaption>
+          <div class="card-media peek peek-1">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-6.png" alt="BERSIH: Two seconds" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+        <figure class="card full" style="--k: var(--accent-indigo)">
+          <figcaption class="card-text">
+            <span class="kicker">Photos and video</span>
+            <h2>One clean action for the media she posts</h2>
+            <p>A single photo, several photos, or a video can leave with a blank back.</p>
+          </figcaption>
+          <div class="card-media peek peek-3">
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-7-1.png" alt="BERSIH: Four photos" loading="lazy"></div>
+            </div>
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-7-2.png" alt="BERSIH: Video" loading="lazy"></div>
+            </div>
+            <div class="mini-phone">
+            <div class="shot"><img src="assets/screens/card-7-3.png" alt="BERSIH: Share again" loading="lazy"></div>
+            </div>
+          </div>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section class="section reviews-section">
+      <h2 class="reviews-title">Questions, answered</h2>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>What is on the back of a photo?</h3>
+          <p>The hidden file details: often where the photo was taken, the date and time, the phone and camera, and the software that touched it.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does BERSIH delete my memory?</h3>
+          <p>No. The original stays as it is. BERSIH creates a clean copy to share and leaves your own photo alone.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does it remove AI watermarks?</h3>
+          <p>Not in v1. The first version is focused on metadata: location, time, date, phone and camera details for photos and videos.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Are photos uploaded?</h3>
+          <p>No. The cleaning is designed to happen on your iPhone, inside the share flow.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Values ===================== -->
+    <section class="section">
+      <div class="section-head">
+        <span class="eyebrow">Values</span>
+        <h2 class="section-title">For the moment before posting</h2>
+      </div>
+      <div class="values">
+        <figure class="value" style="--c: var(--accent-blue)">
+          <span class="badge icon">photo_library</span>
+          <div><h3>Memory stays</h3><p>Your original keeps its back. The shared copy does not.</p></div>
+        </figure>
+        <figure class="value" style="--c: var(--accent-red)">
+          <span class="badge icon">ios_share</span>
+          <div><h3>No new habit</h3><p>It lives where she already shares: the iOS share sheet.</p></div>
+        </figure>
+        <figure class="value" style="--c: var(--accent-green)">
+          <span class="badge icon">cloud_off</span>
+          <div><h3>On device</h3><p>No account and no upload path for the media being cleaned.</p></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="cta">
+      <div class="cta-inner">
+        <img class="app-icon" src="assets/app-icon.svg" alt="BERSIH app icon">
+        <h2>Post the front. Keep the back.</h2>
+        <p>Join the waitlist for the first BERSIH TestFlight.</p>
+        <div class="waitlist-wrap">
+          <form class="waitlist" action="api/join" method="post" data-waitlist data-source="cta">
+            <input type="hidden" name="source" value="cta">
+            <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+            <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
+            <button class="button" type="submit">Join the waitlist</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <a class="app-identity" href="index.html"><span>BERSIH</span><img class="app-icon" src="assets/app-icon.svg" alt=""></a>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms of Use</a></li>
+        <li><a href="updates.html">Follow Updates</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">© <span data-year>2026</span> Joel Vargas. All rights reserved.</div>
+  </footer>
+
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

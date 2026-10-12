@@ -5,12 +5,12 @@ Context for the seven apps that each get a waitlist site in this repo.
 | Folder        | App       | Platform                     | One-liner                                                   |
 | ------------- | --------- | ---------------------------- | ----------------------------------------------------------- |
 | `lotus-g-1` | Lotus G-1 | iOS Live Activity widget     | Speed camera alerts so cautious drivers avoid tickets       |
-| `lotus-c-1` | Lotus C-1 | iOS app + CarPlay            | Keeps long-haul drivers awake by detecting microsleep       |
-| `lotus-f-1` | Lotus F-1 | iOS app                      | Detects hidden surveillance so women travelling feel safe   |
-| `lotus-f-2` | Lotus F-2 | iOS app                      | Cheapest flights on mobile, plus the travel docs you need   |
-| `lotus-e-1` | Lotus E-1 | iOS app                      | Strips metadata and AI fingerprints before you post media   |
+| `kesha` | KESHA | iOS app + CarPlay            | Keeps long-haul drivers awake by detecting microsleep       |
+| `hush` | HUSH | iOS app                      | Detects hidden surveillance so women travelling feel safe   |
+| `listo` | LISTO | iOS app                      | Cheapest flights on mobile, plus the travel docs you need   |
+| `bersih` | BERSIH | iOS app                      | Strips metadata and AI fingerprints before you post media   |
 | `lotus-e-2` | Lotus E-2 | iOS app                      | Checks if someone is active on dating apps                  |
-| `lotus-e-3` | Lotus E-3 | iOS app                      | Bite-sized, vetted news based on your location and interests |
+| `tldr-news` | TLDR NEWS | iOS app                      | Bite-sized, vetted news based on your location and interests |
 
 ---
 
@@ -42,7 +42,7 @@ A Live Activity widget for cautious car drivers who want to avoid speeding ticke
 
 ---
 
-## lotus-c-1: Lotus C-1
+## kesha: KESHA
 
 An iOS app connected to CarPlay for drivers on long journeys who want to stay alert the whole way. It watches for signs of microsleep and blasts loud music to keep them awake.
 
@@ -70,7 +70,7 @@ An iOS app connected to CarPlay for drivers on long journeys who want to stay al
 
 ---
 
-## lotus-f-1: Lotus F-1
+## hush: HUSH
 
 A women's safety app for travellers that detects hidden private networks, micro-surveillance devices, NFC cards, Meta glasses (feasibility to be checked) and similar.
 
@@ -101,7 +101,7 @@ A women's safety app for travellers that detects hidden private networks, micro-
 
 ---
 
-## lotus-f-2: Lotus F-2
+## listo: LISTO
 
 A flight aggregator for travellers. Its main selling point is masking the IP address and phone hardware fingerprint so you get the best price on your phone instead of needing a laptop. It also gives a list of the documents needed for international flights.
 
@@ -129,7 +129,7 @@ A flight aggregator for travellers. Its main selling point is masking the IP add
 
 ---
 
-## lotus-e-1: Lotus E-1
+## bersih: BERSIH
 
 An app that removes all metadata and AI fingerprints from images before people upload them.
 
@@ -184,7 +184,7 @@ Something like Cheaterbuster.
 
 ---
 
-## lotus-e-3: Lotus E-3
+## tldr-news: TLDR NEWS
 
 A bite-sized news platform with vetted sources, tailored to the user's location and interests.
 

@@ -49,13 +49,36 @@
   // ---------- Waitlist ----------
   // Forms post to api/join in their own folder, handled by functions/[app]/api/join.js (Pages Function).
 
-  function setStatus(form, kind, text) {
-    const status = form.parentElement.querySelector(".waitlist-status");
-    if (!status) return;
-    status.className = "waitlist-status " + kind;
+  let toastHost;
+  let toastTimer;
+
+  function ensureToastHost() {
+    if (toastHost) return toastHost;
+    toastHost = document.createElement("div");
+    toastHost.className = "toast-host";
+    toastHost.setAttribute("role", "status");
+    toastHost.setAttribute("aria-live", "polite");
+    document.body.appendChild(toastHost);
+    return toastHost;
+  }
+
+  function showToast(kind, text) {
+    const host = ensureToastHost();
     const icon = kind === "ok" ? "check_circle" : kind === "err" ? "error" : "";
-    status.innerHTML = (icon ? '<span class="icon">' + icon + "</span>" : "") + "<span></span>";
-    status.lastChild.textContent = text;
+    const toast = document.createElement("div");
+    toast.className = "toast toast-" + kind + (reduceMotion ? " toast-no-motion" : "");
+    toast.innerHTML =
+      (icon ? '<span class="icon" aria-hidden="true">' + icon + "</span>" : "") +
+      "<span class=\"toast-text\"></span>";
+    toast.querySelector(".toast-text").textContent = text;
+    host.replaceChildren(toast);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.add("toast-out");
+      setTimeout(function () {
+        if (toast.parentElement) toast.remove();
+      }, reduceMotion ? 0 : 280);
+    }, 4000);
   }
 
   document.querySelectorAll("form[data-waitlist]").forEach(function (form) {
@@ -64,7 +87,7 @@
       const data = new FormData(form);
       const email = String(data.get("email") || "").trim();
       if (!email || !form.checkValidity()) {
-        setStatus(form, "err", "Please enter a valid email address.");
+        showToast("err", "Please enter a valid email address.");
         return;
       }
       if (data.get("company")) return; // honeypot filled: quietly ignore bots
@@ -87,13 +110,13 @@
           });
         })
         .then(function (body) {
-          setStatus(form, "ok", body.already
+          showToast("ok", body.already
             ? "You're already on the list. We'll be in touch."
             : "You're on the list! We'll email you when it's ready.");
           form.reset();
         })
         .catch(function (err) {
-          setStatus(form, "err", err.message || "Something went wrong. Please try again.");
+          showToast("err", err.message || "Something went wrong. Please try again.");
         })
         .finally(function () { button.disabled = false; });
     });
@@ -102,7 +125,7 @@
   // Returning from a no-JS form post (?joined=1).
   if (/[?&]joined=1/.test(location.search)) {
     document.querySelectorAll("form[data-waitlist]").forEach(function (form) {
-      setStatus(form, "ok", "You're on the list! We'll email you when it's ready.");
+      showToast("ok", "You're on the list! We'll email you when it's ready.");
     });
   }
 

@@ -18,6 +18,19 @@ const SLUG_RE = /^[a-z0-9-]+$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
+// Public URL folders that differ from apps.slug in D1 (see scripts/migrate-waitlist-slugs.sql).
+const SLUG_ALIASES = {
+  kesha: "lotus-c-1",
+  hush: "lotus-f-1",
+  listo: "lotus-f-2",
+  bersih: "lotus-e-1",
+  "tldr-news": "lotus-e-3",
+};
+
+function dbSlug(urlSlug) {
+  return SLUG_ALIASES[urlSlug] ?? urlSlug;
+}
+
 function json(body, status) {
   return new Response(JSON.stringify(body), {
     status,
@@ -74,7 +87,7 @@ async function join(request, env, slug) {
 
   const app = await env.DB
     .prepare("SELECT id FROM apps WHERE slug = ? AND is_active = 1")
-    .bind(slug)
+    .bind(dbSlug(slug))
     .first();
   if (!app) return json({ error: "This waitlist isn't open right now." }, 404);
 

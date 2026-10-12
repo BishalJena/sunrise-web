@@ -29,7 +29,7 @@ ASSETS_DIR = os.path.join(HERE, "assets")
 PUBLIC_DIR = os.path.join(ROOT, "public")
 
 # Shared settings -------------------------------------------------------------
-ORDER = ["lotus-g-1", "lotus-c-1", "lotus-f-1", "lotus-f-2", "lotus-e-1", "lotus-e-2", "lotus-e-3"]
+ORDER = ["bersih", "hush", "kesha", "listo", "tldr-news", "lotus-g-1", "lotus-e-2"]
 OWNER = "Joel Vargas"
 LAST_UPDATED = "October 9, 2026"
 # Relative, so each app's forms post to bishal.app/<slug>/api/join.
@@ -45,6 +45,45 @@ esc = html.escape
 
 
 # Building blocks -------------------------------------------------------------
+def theme_fonts(app):
+    links = app.get("font_links", ())
+    if not links:
+        return ""
+    return "".join(f'  <link rel="stylesheet" href="{href}">\n' for href in links)
+
+
+def theme_css(app):
+    t = app.get("theme")
+    if not t:
+        return f':root {{ --brand: {app["brand"]}; --brand-2: {app["brand2"]}; }}'
+
+    lines = [
+        f'--brand: {app["brand"]}',
+        f'--brand-2: {app["brand2"]}',
+        f'--color-fill-0: {t["card"]}',
+        f'--color-fill-1: {t["page"]}',
+        f'--color-fill-2: {t["inset"]}',
+        f'--color-fill-3: {t["line"]}',
+        f'--color-card: {t["card"]}',
+        f'--color-inset: {t["inset"]}',
+        f'--color-text-primary: {t["ink"]}',
+        f'--color-text-secondary: {t["muted"]}',
+        f'--color-text-tertiary: {t["faint"]}',
+        f'--color-hairline: {t["hairline"]}',
+        f'--color-brand: {t["button"]}',
+        f'--color-on-brand: {t["on_button"]}',
+        f'--shadow-card: {t["shadow_card"]}',
+        f'--shadow-float: {t["shadow_float"]}',
+        f'--font-text: {t["font_text"]}',
+        f'--font-display: {t["font_display"]}',
+        f'--font-rounded: {t.get("font_rounded", t["font_text"])}',
+        f'color-scheme: {t.get("color_scheme", "light")}',
+    ]
+    for name, value in t.get("accents", {}).items():
+        lines.append(f'--accent-{name}: {value}')
+    return ":root {\n  " + ";\n  ".join(lines) + ";\n}"
+
+
 def icon_svg(app):
     i = app["icon"]
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
@@ -77,8 +116,8 @@ def head(app, title, description):
   <meta property="og:type" content="website">
   <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/app-icon.svg">
-{FONTS}  <link rel="stylesheet" href="assets/styles.css">
-  <style>:root {{ --brand: {app["brand"]}; --brand-2: {app["brand2"]}; }}</style>
+{FONTS}{theme_fonts(app)}  <link rel="stylesheet" href="assets/styles.css">
+  <style>{theme_css(app)}</style>
   <script>if (scrollY < 8) document.documentElement.classList.add("nav-top");</script>
 </head>
 '''
@@ -136,12 +175,11 @@ def waitlist_form(app, source, label="Join the waitlist", center=False):
             <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
             <button class="button" type="submit">{esc(label)}</button>
           </form>
-          <p class="waitlist-status" role="status" aria-live="polite"></p>
         </div>'''
 
 
 def page(app, filename, title, description, body, current=None, on_home=False):
-    out = head(app, title, description) + "<body>\n" + nav(app, current, on_home) + \
+    out = head(app, title, description) + f'<body data-app="{app["slug"]}">\n' + nav(app, current, on_home) + \
         "\n  <main>\n" + body + "\n  </main>\n\n" + footer(app)
     with open(os.path.join(public_dir(app["slug"]), filename), "w") as f:
         f.write(out)
@@ -215,7 +253,6 @@ def build_index(app):
     body = f'''    <!-- ===================== Hero ===================== -->
     <section class="hero" id="waitlist">
       <div class="hero-content">
-        <span class="status-pill"><span class="dot"></span>{esc(app["status"])}</span>
         <h1>{app["h1"]}</h1>
         <p>{esc(app["sub"])}</p>
         {waitlist_form(app, "hero")}
@@ -481,6 +518,8 @@ def build_catalogue():
     entries = []
     for slug in ORDER:
         app = load_app(slug)
+        if app.get("listed") is False:
+            continue
         entries.append({
             "slug": slug,
             "name": app["name"],
