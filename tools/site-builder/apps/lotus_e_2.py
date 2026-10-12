@@ -1,6 +1,7 @@
 """Lotus E-2: check whether someone has an active public dating profile."""
 
 APP = {
+    "listed": False,
     "name": "Lotus E-2",
     "title": "Find out if they're still on dating apps",
     "description": "Lotus E-2 checks popular dating apps for active public profiles, so you can stop wondering and have the conversation with facts. Join the waitlist.",

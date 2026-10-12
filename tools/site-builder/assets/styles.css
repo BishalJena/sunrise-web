@@ -107,6 +107,65 @@ ul { list-style: none; }
 .rounded { font-family: var(--font-rounded); }
 h1, h2, h3, .display { font-family: var(--font-display); }
 
+body[data-app] {
+  background:
+    radial-gradient(900px 520px at 16% 0%, color-mix(in srgb, var(--brand) 10%, transparent), transparent 70%),
+    radial-gradient(820px 520px at 90% 12%, color-mix(in srgb, var(--brand-2) 8%, transparent), transparent 72%),
+    var(--color-fill-1);
+}
+body[data-app="hush"],
+body[data-app="listo"],
+body[data-app="bersih"],
+body[data-app="tldr-news"] {
+  --radius-card: 26px;
+  --radius-inner: 16px;
+}
+body[data-app="hush"] h1,
+body[data-app="hush"] h2,
+body[data-app="hush"] h3,
+body[data-app="listo"] h1,
+body[data-app="listo"] h2,
+body[data-app="bersih"] h1,
+body[data-app="bersih"] h2,
+body[data-app="tldr-news"] h1,
+body[data-app="tldr-news"] h2,
+body[data-app="tldr-news"] h3 {
+  letter-spacing: 0;
+}
+body[data-app="listo"] .button,
+body[data-app="listo"] .kicker,
+body[data-app="listo"] .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+body[data-app="bersih"] .kicker,
+body[data-app="bersih"] .eyebrow,
+body[data-app="underneath"] .kicker,
+body[data-app="tldr-news"] .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+body[data-app="kesha"] {
+  --radius-card: 30px;
+  --radius-inner: 20px;
+  background:
+    radial-gradient(900px 520px at 50% -10%, color-mix(in srgb, var(--brand) 22%, transparent), transparent 68%),
+    radial-gradient(760px 480px at 88% 18%, color-mix(in srgb, var(--brand-2) 16%, transparent), transparent 72%),
+    var(--color-fill-1);
+}
+body[data-app="kesha"] .hero h1,
+body[data-app="kesha"] .section-title,
+body[data-app="kesha"] .reviews-title,
+body[data-app="kesha"] .cta h2 {
+  letter-spacing: -0.035em;
+}
+body[data-app="kesha"] .card,
+body[data-app="kesha"] .cta-inner,
+body[data-app="kesha"] .article,
+body[data-app="kesha"] .value {
+  box-shadow: inset 0 0 0 1px var(--color-hairline), 0 22px 60px -34px rgb(0 0 0 / .9);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; animation-iteration-count: 1 !important; }
@@ -1576,4 +1635,50 @@ textarea.input { min-height: 150px; resize: vertical; line-height: 1.5; }
 .mini-phone .shot-ph { padding-top: 74px; }
 .waitlist-status:empty { min-height: 0; margin-top: 0; }
 .hero .waitlist-wrap + .hero-note { margin-top: -12px; }
+
+/* ---------- Waitlist toasts ---------- */
+.toast-host {
+  position: fixed;
+  z-index: 10000;
+  left: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text);
+  background: var(--color-card);
+  box-shadow: 0 0 0 1px var(--color-hairline), 0 12px 40px -8px rgb(16 16 32 / 0.35);
+  animation: toast-in 0.32s var(--ease-ios, cubic-bezier(0.32, 0.72, 0, 1));
+}
+.toast-no-motion { animation: none; }
+.toast-out { animation: toast-out 0.28s var(--ease-ios, cubic-bezier(0.32, 0.72, 0, 1)) forwards; }
+.toast-no-motion.toast-out { animation: none; opacity: 0; }
+.toast-ok { color: var(--accent-green); }
+.toast-ok .icon { color: var(--accent-green); }
+.toast-err { color: var(--accent-red); }
+.toast-err .icon { color: var(--accent-red); }
+.toast .icon { font-size: 22px; flex-shrink: 0; }
+.toast-text { color: var(--color-text); font-weight: 600; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+  .toast-out { animation: none; opacity: 0; }
+}
 .shot-ph code { white-space: normal; word-break: break-all; text-align: center; line-height: 1.4; max-width: 170px; }

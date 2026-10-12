@@ -1,6 +1,7 @@
 """Lotus G-1: speed camera alerts as an iOS Live Activity."""
 
 APP = {
+    "listed": False,
     "name": "Lotus G-1",
     "title": "Speed camera alerts on your Lock Screen",
     "description": "Lotus G-1 shows upcoming speed cameras on your Dynamic Island and Lock Screen, and tells you when to ease off. Join the waitlist.",

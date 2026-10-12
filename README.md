@@ -22,13 +22,13 @@ apple-cta-websites/
 └── public/                     # What Pages serves
     ├── index.html, styles.css  # The catalogue at https://bishal.app/
     ├── apps.js                 # Catalogue's app list (generated)
-    ├── lotus-g-1/              # https://bishal.app/lotus-g-1/
-    ├── lotus-c-1/              # https://bishal.app/lotus-c-1/
-    ├── lotus-f-1/              # https://bishal.app/lotus-f-1/
-    ├── lotus-f-2/              # https://bishal.app/lotus-f-2/
-    ├── lotus-e-1/              # https://bishal.app/lotus-e-1/
-    ├── lotus-e-2/              # https://bishal.app/lotus-e-2/
-    └── lotus-e-3/              # https://bishal.app/lotus-e-3/
+    ├── lotus-g-1/              # https://bishal.app/lotus-g-1/ (catalogue)
+    ├── lotus-e-2/              # https://bishal.app/lotus-e-2/ (catalogue)
+    ├── kesha/                  # https://bishal.app/kesha/
+    ├── hush/                   # https://bishal.app/hush/
+    ├── listo/                  # https://bishal.app/listo/
+    ├── bersih/                 # https://bishal.app/bersih/
+    └── tldr-news/              # https://bishal.app/tldr-news/
 ```
 
 See [APPS.md](APPS.md) for what each app does, who it's for, and its key features.
@@ -81,7 +81,7 @@ Drop portrait iPhone screenshots (1179×2556 works well) into `tools/site-builde
 
 - `contacts`: one row per email (unique on the lowercased email)
 - `waitlist_signups`: one row per email per app, with approximate location from Cloudflare (country, region, city, time zone, lat/long), `utm_*` tags from the landing URL, landing page, referrer, and the form it came from (`metadata.source`)
-- `apps`: one row per site, matched on `slug` (the URL folder). Unknown or inactive slugs get a 404, so a new app needs a row here before its waitlist works.
+- `apps`: one row per site, matched on `slug` in D1. Unknown or inactive slugs get a 404, so a new app needs a row here before its waitlist works. If the public URL folder differs from `apps.slug` (e.g. `/kesha/` → `lotus-c-1`), add a mapping in `SLUG_ALIASES` in [`functions/[app]/api/join.js`](functions/[app]/api/join.js). Optionally rename rows in D1 with [`scripts/migrate-waitlist-slugs.sql`](scripts/migrate-waitlist-slugs.sql) and remove the alias once slugs match.
 
 Forms work without JavaScript too: a plain form post redirects back with `?joined=1`.
 
