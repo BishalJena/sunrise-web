@@ -71,13 +71,6 @@ main {
   text-align: center;
 }
 
-.eyebrow {
-  margin: 0 0 14px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--label-tertiary);
-}
-
 .hero h1 {
   margin: 0 auto;
   max-width: 820px;
@@ -327,10 +320,9 @@ main {
 }
 
 /* ---------- First load: settle in, top to bottom ---------- */
-.eyebrow, .hero h1, .lede, .window { animation: rise 700ms var(--ease-out) both; }
-.hero h1 { animation-delay: 50ms; }
-.lede { animation-delay: 100ms; }
-.window { animation-delay: 200ms; }
+.hero h1, .lede, .window { animation: rise 700ms var(--ease-out) both; }
+.lede { animation-delay: 50ms; }
+.window { animation-delay: 150ms; }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 
 /* ---------- Small screens ---------- */
@@ -347,7 +339,7 @@ main {
 
 /* Reduced motion: keep fades, drop movement */
 @media (prefers-reduced-motion: reduce) {
-  .eyebrow, .hero h1, .lede, .window, .window.no-embed .blocked { animation: fade 300ms ease both; animation-delay: 0ms; }
+  .hero h1, .lede, .window, .window.no-embed .blocked { animation: fade 300ms ease both; animation-delay: 0ms; }
   .frame { transition-property: opacity; }
   .go:hover svg { transform: none; }
 }
