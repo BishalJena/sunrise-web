@@ -78,74 +78,86 @@ button { font: inherit; color: inherit; }
   text-align: center;
 }
 
-/* ---------- Segmented tabs ---------- */
-.tabs {
-  max-width: 100%;
+/* ---------- Picker: a fixed lens, apps scroll through it ---------- */
+.picker {
+  --item: 156px;
+  position: relative;
+  width: min(100%, 780px);
   margin-top: 28px;
+  container-type: inline-size;
+}
+
+.lens {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--item);
+  height: 42px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c2, #8e8e93) 13%, var(--window));
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--c2, #8e8e93) 24%, transparent),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.tabs {
+  position: relative; /* tabs measure their offsets against this */
   overflow-x: auto;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
 }
 .tabs::-webkit-scrollbar { display: none; }
 
-.track {
-  position: relative;
+/* Half the picker either side, so the first and last apps can reach the lens */
+.seg {
+  display: flex;
   width: max-content;
-  margin: 0 auto;
-  padding: 2px; /* room for the focus ring */
+  padding: 3px calc(50cqw - var(--item) / 2);
 }
 
-.seg { display: flex; }
-
 .tab {
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px 0 10px;
+  flex: none;
+  width: var(--item);
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--label-tertiary);
+  color: var(--label-secondary);
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
+  scroll-snap-align: center;
   transition: color 150ms ease, transform 160ms var(--ease-out);
+}
+.tab .face {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  will-change: transform, opacity; /* set every frame while scrolling */
 }
 .tab .icon {
   width: 22px;
   height: 22px;
   border-radius: 22.37%;
-  opacity: 0.45;
   filter: grayscale(1);
+  opacity: 0.6;
+  transition: filter 200ms ease, opacity 200ms ease;
 }
-.seg:not(.seg-active) .tab:active { transform: scale(0.96); }
+.tab.on { color: var(--label); }
+.tab.on .icon { filter: none; opacity: 1; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+.tab:active { transform: scale(0.95); }
 
 @media (hover: hover) and (pointer: fine) {
-  .seg:not(.seg-active) .tab:hover { color: var(--label-secondary); }
+  .tab:not(.on):hover { color: var(--label); }
 }
-
-/* The selected look. Only the selected tab shows through the clip. */
-.seg-active {
-  position: absolute;
-  inset: 2px;
-  pointer-events: none;
-  transition: clip-path 360ms var(--ease-ios);
-  will-change: clip-path;
-}
-.seg-active .tab {
-  color: var(--label);
-  background: color-mix(in srgb, var(--c2) 13%, var(--window));
-  border-radius: 0;
-  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--c2) 22%, transparent);
-}
-.seg-active .tab .icon {
-  opacity: 1;
-  filter: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-}
-.tabs[data-instant] .seg-active { transition: none; }
 
 .tagline {
   margin: 14px 0 0;
@@ -321,8 +333,8 @@ button { font: inherit; color: inherit; }
 }
 
 /* ---------- First load: settle in, top to bottom ---------- */
-.head, .tabs, .tagline, .window { animation: rise 600ms var(--ease-out) both; }
-.tabs { animation-delay: 60ms; }
+.head, .picker, .tagline, .window { animation: rise 600ms var(--ease-out) both; }
+.picker { animation-delay: 60ms; }
 .tagline { animation-delay: 120ms; }
 .window { animation-delay: 180ms; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
@@ -335,13 +347,7 @@ button { font: inherit; color: inherit; }
     padding: 32px 0 24px;
   }
   .head h1 { font-size: 30px; }
-  .tabs {
-    margin-top: 20px;
-    padding: 0 16px;
-    scroll-padding: 0 16px;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
-  }
+  .picker { --item: 140px; margin-top: 20px; }
   .tagline { padding: 0 16px; }
   .window {
     width: calc(100% - 32px);
@@ -357,8 +363,8 @@ button { font: inherit; color: inherit; }
 
 /* Reduced motion: keep fades, drop movement */
 @media (prefers-reduced-motion: reduce) {
-  .head, .tabs, .tagline, .window, .window.no-embed .blocked { animation: fade 300ms ease both; animation-delay: 0ms; }
-  .seg-active, .frame { transition-property: opacity; }
+  .head, .picker, .tagline, .window, .window.no-embed .blocked { animation: fade 300ms ease both; animation-delay: 0ms; }
+  .frame { transition-property: opacity; }
   .go:hover svg { transform: none; }
 }
 @keyframes fade { from { opacity: 0; } }
