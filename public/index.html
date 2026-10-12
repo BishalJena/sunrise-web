@@ -4,52 +4,50 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>bishal.app — Catalogue</title>
-  <meta name="description" content="A catalogue of apps made by Bishal, with live previews." />
+  <meta name="description" content="Small iPhone apps, each for one everyday job. Preview every one of them here." />
   <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="head">
-      <h1>Our Catalogue</h1>
-    </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">bishal.app</p>
+      <h1>Small apps for everyday&nbsp;jobs.</h1>
+      <p class="lede">Each one does a single thing on your iPhone. Open any of them below to look around, and join the waitlist for the ones you want.</p>
+      <ul class="home" id="home" aria-label="Apps"></ul>
+    </section>
 
-    <div class="picker">
-      <span class="lens" id="lens" aria-hidden="true"></span>
-      <div class="tabs" id="tabs">
-        <div class="seg" id="seg" role="tablist" aria-label="Apps"></div>
-      </div>
-    </div>
+    <section class="window" id="window" aria-label="Preview">
+      <div class="chrome">
+        <header class="toolbar">
+          <div class="lights" aria-hidden="true"><span></span><span></span><span></span></div>
 
-    <p class="tagline" id="tagline" aria-live="polite"></p>
+          <div class="bar">
+            <a class="address" id="address" target="_blank" rel="noopener" title="Open in new tab">
+              <svg width="10" height="12" viewBox="0 0 11 13" fill="currentColor" aria-hidden="true"><path d="M2.5 5.5V4a3 3 0 0 1 6 0v1.5h.5A1.5 1.5 0 0 1 10.5 7v4.5A1.5 1.5 0 0 1 9 13H2A1.5 1.5 0 0 1 .5 11.5V7A1.5 1.5 0 0 1 2 5.5h.5zm1.5 0h3V4a1.5 1.5 0 0 0-3 0v1.5z"/></svg>
+              <span class="url" id="url"></span>
+            </a>
+            <a class="go" id="open" target="_blank" rel="noopener" title="Open in new tab" aria-label="Open in new tab">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
 
-    <section class="window" id="window" role="tabpanel" aria-label="Preview">
-      <header class="toolbar">
-        <span></span>
+          <div class="actions">
+            <button class="tool" id="device" type="button" aria-pressed="false" title="Phone preview" aria-label="Toggle phone preview">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+            </button>
+            <button class="tool" id="reload" type="button" title="Reload" aria-label="Reload preview">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+            </button>
+          </div>
+        </header>
 
-        <div class="bar">
-          <a class="address" id="address" target="_blank" rel="noopener" title="Open in new tab">
-            <svg width="10" height="12" viewBox="0 0 11 13" fill="currentColor" aria-hidden="true"><path d="M2.5 5.5V4a3 3 0 0 1 6 0v1.5h.5A1.5 1.5 0 0 1 10.5 7v4.5A1.5 1.5 0 0 1 9 13H2A1.5 1.5 0 0 1 .5 11.5V7A1.5 1.5 0 0 1 2 5.5h.5zm1.5 0h3V4a1.5 1.5 0 0 0-3 0v1.5z"/></svg>
-            <span class="url" id="url"></span>
-          </a>
-          <a class="go" id="open" target="_blank" rel="noopener" title="Open in new tab" aria-label="Open in new tab">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-
-        <div class="actions">
-          <button class="tool" id="device" type="button" aria-pressed="false" title="Phone preview" aria-label="Toggle phone preview">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
-          </button>
-          <button class="tool" id="reload" type="button" title="Reload" aria-label="Reload preview">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
-          </button>
-        </div>
+        <div class="tabbar" id="tabbar" role="tablist" aria-label="Apps"></div>
         <span class="progress" aria-hidden="true"></span>
-      </header>
+      </div>
 
-      <div class="viewport">
+      <div class="viewport" role="tabpanel" id="panel">
         <iframe class="frame" id="frame" title="App preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
         <div class="blocked" id="blocked"></div>
       </div>
@@ -63,97 +61,61 @@
     const esc = (s = "") => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
     const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     const parse = (u) => { try { return new URL(u, location.href); } catch { return null; } };
-    const clamp = (i) => Math.min(apps.length - 1, Math.max(0, i));
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 
-    const colorVars = (a) => `--c1:${esc(a.colors?.[0] || "#8e8e93")};--c2:${esc(a.colors?.[1] || "#3a3a3c")}`;
-    const icon = (a) => `<img class="icon" src="${esc(a.icon)}" alt="" aria-hidden="true">`;
+    const icon = (a, cls = "icon") => `<img class="${cls}" src="${esc(a.icon)}" alt="" aria-hidden="true">`;
 
-    const tabs = $("#tabs"), seg = $("#seg"), lens = $("#lens");
-    const win = $("#window"), frame = $("#frame");
+    const home = $("#home"), tabbar = $("#tabbar"), win = $("#window"), frame = $("#frame");
 
-    // A picker, like a watch's date window: the lens stays put in the middle
-    // and the apps scroll through it. Whatever sits in the lens is selected.
-    seg.innerHTML = apps.map((a, i) => `
-      <button class="tab" type="button" role="tab" id="tab-${i}" aria-selected="false"
-        aria-controls="window" tabindex="-1" style="${colorVars(a)}" data-i="${i}">
-        <span class="face">${icon(a)}<span>${esc(a.name)}</span></span>
+    // Hero: the apps as a home-screen row. Tapping one opens it in the window.
+    home.innerHTML = apps.map((a, i) => `
+      <li style="--i:${i}">
+        <button class="app" type="button" data-i="${i}" title="${esc(a.tagline || "")}">
+          ${icon(a)}<span class="label">${esc(a.name.replace(/^Lotus\s+/, ""))}</span>
+        </button>
+      </li>`).join("");
+    const homeApps = [...home.querySelectorAll(".app")];
+
+    // Safari tabs, one per app
+    tabbar.innerHTML = apps.map((a, i) => `
+      <button class="tab" type="button" role="tab" id="tab-${i}" data-i="${i}"
+        aria-selected="false" aria-controls="panel" tabindex="-1" title="${esc(a.tagline || a.name)}">
+        ${icon(a, "favicon")}<span>${esc(a.name)}</span>
       </button>`).join("");
-    const tabEls = [...seg.querySelectorAll(".tab")];
-    const faces = tabEls.map((t) => t.firstElementChild);
+    const tabEls = [...tabbar.querySelectorAll(".tab")];
 
-    const centerOf = (t) => t.offsetLeft + t.offsetWidth / 2;
-    const scrollFor = (i) => centerOf(tabEls[i]) - tabs.clientWidth / 2;
-
-    function nearest() {
-      const mid = tabs.scrollLeft + tabs.clientWidth / 2;
-      let best = 0;
-      tabEls.forEach((t, i) => {
-        if (Math.abs(centerOf(t) - mid) < Math.abs(centerOf(tabEls[best]) - mid)) best = i;
-      });
-      return best;
+    // Keep the active tab visible when the tab bar scrolls (narrow screens).
+    // Set scrollLeft directly: scrollIntoView would also scroll the page.
+    function revealTab(t) {
+      const left = t.offsetLeft - 8, right = t.offsetLeft + t.offsetWidth + 8;
+      if (left < tabbar.scrollLeft) tabbar.scrollLeft = left;
+      else if (right > tabbar.scrollLeft + tabbar.clientWidth) tabbar.scrollLeft = right - tabbar.clientWidth;
     }
 
-    // Fade and shrink apps the further they are from the lens, like a wheel
-    function paint() {
-      const mid = tabs.scrollLeft + tabs.clientWidth / 2;
-      tabEls.forEach((t, i) => {
-        const d = Math.min(3, Math.abs(centerOf(t) - mid) / t.offsetWidth);
-        faces[i].style.opacity = 1 - d * 0.28;
-        faces[i].style.transform = reduced.matches ? "" : `scale(${1 - d * 0.06})`;
-      });
-    }
-
-    // Swap text with a short blur, so old and new read as one change
-    const swaps = new Map();
-    function swap(el, html, animate) {
-      if (el.innerHTML === html) return;
-      el.innerHTML = html;
-      swaps.get(el)?.cancel();
-      if (animate && !reduced.matches) {
-        swaps.set(el, el.animate(
-          [{ opacity: 0, filter: "blur(3px)" }, { opacity: 1, filter: "blur(0)" }],
-          { duration: 200, easing: "cubic-bezier(0.23, 1, 0.32, 1)" }
-        ));
-      }
-    }
-
-    // Show which app is in the lens. Cheap, so it runs live while scrolling.
     let current = -1;
-    function highlight(i, animate = true) {
-      if (i === current) return;
+    function select(i, { focus = false } = {}) {
+      if (i < 0 || i >= apps.length || i === current) return;
       current = i;
       const a = apps[i];
       const u = parse(a.url);
 
       tabEls.forEach((t, n) => {
-        const on = n === i;
-        t.classList.toggle("on", on);
-        t.setAttribute("aria-selected", on);
-        t.tabIndex = on ? 0 : -1;
+        t.setAttribute("aria-selected", n === i);
+        t.tabIndex = n === i ? 0 : -1;
       });
-      lens.style.cssText = colorVars(a);
-      win.setAttribute("aria-labelledby", `tab-${i}`);
+      homeApps.forEach((b, n) => b.classList.toggle("open", n === i));
+      $("#panel").setAttribute("aria-labelledby", `tab-${i}`);
+      if (focus) tabEls[i].focus({ preventScroll: true });
+      revealTab(tabEls[i]);
 
       history.replaceState(null, "", "#" + (a.slug || slug(a.name)));
       document.title = `${a.name} — bishal.app`;
 
       const path = u ? (u.pathname === "/" ? "" : u.pathname) : "";
-      swap($("#url"), u ? `${esc(u.host.replace(/^www\./, ""))}<span class="path">${esc(path)}</span>` : esc(a.url), animate);
-      swap($("#tagline"), esc(a.tagline || ""), animate);
+      $("#url").innerHTML = u
+        ? `${esc(u.host.replace(/^www\./, ""))}<span class="path">${esc(path)}</span>`
+        : esc(a.url);
       $("#address").href = $("#open").href = a.url;
-    }
-
-    // Load the preview once the picker comes to rest, so a flick across
-    // every app doesn't start a page load for each one it passes.
-    let shown = -1;
-    function commit() {
-      target = null;
-      paint();
-      highlight(nearest()); // scrollend can land before the last frame's update
-      if (current === shown) return;
-      shown = current;
-      const a = apps[current];
 
       if (a.embed === false) {
         win.classList.add("no-embed");
@@ -172,15 +134,6 @@
       }
     }
 
-    // Scroll an app into the lens
-    let target = null;
-    function goTo(i, { smooth = true } = {}) {
-      target = i = clamp(i);
-      const glide = smooth && !reduced.matches;
-      tabs.scrollTo({ left: scrollFor(i), behavior: glide ? "smooth" : "instant" });
-      if (!glide) { paint(); highlight(i, false); commit(); }
-    }
-
     function load(url) {
       win.classList.remove("loaded");
       void win.offsetWidth; // restart the progress animation
@@ -192,41 +145,21 @@
       win.classList.replace("loading", "loaded");
     });
 
-    // Scrolling: repaint every frame, update the lens live, load on rest
-    let frameReq = 0, settle = 0;
-    tabs.addEventListener("scroll", () => {
-      cancelAnimationFrame(frameReq);
-      frameReq = requestAnimationFrame(() => { paint(); highlight(nearest()); });
-      clearTimeout(settle);
-      settle = setTimeout(commit, 160); // fallback where scrollend isn't supported
-    }, { passive: true });
-    tabs.addEventListener("scrollend", () => { clearTimeout(settle); commit(); });
-
-    // A vertical mouse wheel turns the picker one app per notch, like a crown.
-    // Sideways trackpad swipes scroll natively and snap on their own.
-    let wheelSum = 0, wheelIdle = 0;
-    tabs.addEventListener("wheel", (e) => {
-      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
-      e.preventDefault();
-      wheelSum += e.deltaY;
-      clearTimeout(wheelIdle);
-      wheelIdle = setTimeout(() => (wheelSum = 0), 180);
-      if (Math.abs(wheelSum) < 40) return;
-      goTo((target ?? current) + Math.sign(wheelSum));
-      wheelSum = 0;
-    }, { passive: false });
-
-    seg.addEventListener("click", (e) => {
-      const t = e.target.closest(".tab");
-      if (t) goTo(+t.dataset.i);
+    // Interactions
+    home.addEventListener("click", (e) => {
+      const b = e.target.closest(".app");
+      if (!b) return;
+      select(+b.dataset.i);
+      win.scrollIntoView({ behavior: reduced.matches ? "auto" : "smooth", block: "center" });
     });
-    // Keyboard steps jump straight there: no glide for repeated key presses
-    seg.addEventListener("keydown", (e) => {
-      const to = { ArrowRight: current + 1, ArrowLeft: current - 1, Home: 0, End: apps.length - 1 }[e.key];
-      if (to === undefined) return;
-      e.preventDefault();
-      goTo(to, { smooth: false });
-      tabEls[current].focus({ preventScroll: true });
+    tabbar.addEventListener("click", (e) => {
+      const t = e.target.closest(".tab");
+      if (t) select(+t.dataset.i);
+    });
+    tabbar.addEventListener("keydown", (e) => {
+      const last = apps.length - 1;
+      const to = { ArrowRight: Math.min(last, current + 1), ArrowLeft: Math.max(0, current - 1), Home: 0, End: last }[e.key];
+      if (to !== undefined) { e.preventDefault(); select(to, { focus: true }); }
     });
     $("#reload").addEventListener("click", () => {
       const a = apps[current];
@@ -237,14 +170,9 @@
       e.currentTarget.setAttribute("aria-pressed", on);
     });
 
-    // Keep the selected app centred when the picker changes width
-    new ResizeObserver(() => {
-      if (current >= 0) { tabs.scrollTo({ left: scrollFor(current), behavior: "instant" }); paint(); }
-    }).observe(tabs);
-
     // Start on the app in the URL hash (shareable links), else the first one
     const fromHash = apps.findIndex((a) => (a.slug || slug(a.name)) === location.hash.slice(1));
-    goTo(fromHash >= 0 ? fromHash : 0, { smooth: false });
+    select(fromHash >= 0 ? fromHash : 0);
   </script>
 
 </body>
