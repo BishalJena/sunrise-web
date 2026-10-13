@@ -1,0 +1,66 @@
+
+/* ---------- Lotus G-1: the site's iOS components, fitted to each card ---------- */
+
+/* 1 · the Lock Screen with its Live Activity */
+.stage .wallpaper.lock { width: 100%; height: 100%; justify-content: flex-end; gap: 14px; padding: 22px 18px 26px; border-radius: 22px 22px 0 0; }
+.stage .lock-time { margin-bottom: auto; font: 600 clamp(40px, 16cqmin, 64px) / 1 var(--font-rounded); letter-spacing: -.02em; opacity: .92; }
+.stage .wallpaper .island.compact { position: static; transform: none; width: auto; min-width: 150px; gap: 18px; }
+.stage .wallpaper .island .rounded { font-weight: 700; font-size: 15px; }
+@media (prefers-reduced-motion: no-preference) {
+  .stage .la-bar i { animation: g1-close 6s ease-in-out infinite; }
+  @keyframes g1-close { from { width: 20%; } to { width: 92%; } }
+}
+
+/* 2 · banners and the full-screen alert */
+.stage .notif-stack { width: 46%; max-width: 320px; }
+.stage .alert-screen { width: 44%; max-width: 290px; }
+.stage .said { font-size: 12.5px; font-style: italic; line-height: 1.35; opacity: .8; }
+.stage .alert-screen .said { margin-top: -2px; }
+
+/* 3 · gauge and the nudge */
+.stage .center.col { flex-direction: column; gap: 14px; }
+.stage .gauge { max-width: 230px; }
+.stage .advice {
+  display: flex; align-items: center; gap: 10px; max-width: 320px; padding: 10px 14px; border-radius: 16px;
+  background: color-mix(in srgb, var(--accent-orange) 14%, var(--color-card)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-orange) 30%, transparent);
+}
+.stage .advice .icon { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; font-size: 20px; color: #fff; background: var(--accent-orange); }
+.stage .advice b { display: block; font-size: 14px; }
+.stage .advice span { display: block; font-size: 12px; color: var(--color-text-secondary); }
+
+/* 4 · reports */
+.stage .center > .list { width: 100%; max-width: 340px; }
+
+/* 5 · the camera map, filling the card */
+.stage .map.fill { position: absolute; inset: 0; aspect-ratio: auto; border-radius: 22px 22px 0 0; }
+.stage .map .pin.small { width: 22px; height: 22px; font-size: 13px; }
+.stage .cam-card {
+  position: absolute; right: 4%; top: 7%; width: min(44%, 260px); padding: 12px 14px; border-radius: 16px;
+  background: var(--color-card); box-shadow: var(--shadow-float); display: grid; gap: 10px;
+}
+.stage .cam-head { display: flex; align-items: center; gap: 10px; }
+.stage .cam-head .la-sign { border-width: 3px; }
+.stage .cam-head b { display: block; font-size: 14px; }
+.stage .cam-head span { display: block; font-size: 11.5px; color: var(--color-text-secondary); }
+.stage .cam-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stage .cam-rows span { padding: 7px 9px; border-radius: 10px; background: var(--color-inset); font-size: 10.5px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .03em; }
+.stage .cam-rows b { display: block; margin-top: 2px; font-size: 12.5px; color: var(--color-text); text-transform: none; letter-spacing: 0; }
+
+/* 7 · spoken and on CarPlay */
+.stage .spoken { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 30%; max-width: 280px; text-align: center; }
+.stage .spoken .island { position: static; transform: none; width: 100%; padding: 10px 14px; gap: 10px; }
+.stage .spoken .n-icon { width: 30px; height: 30px; border-radius: 8px; flex: none; }
+.stage .spoken .wave { flex: 1; height: 32px; gap: 3px; }
+.stage .spoken .wave i { width: 4px; --c: var(--accent-orange); height: calc(var(--h) * .7); }
+.stage .spoken .rounded { font-weight: 700; font-size: 15px; }
+.stage .spoken .said { color: var(--color-text-secondary); }
+.stage .carplay { width: 62%; }
+
+/* Narrow stages */
+@container stage (max-width: 440px) {
+  .s2 .notif-stack { display: none; }
+  .s2 .alert-screen { width: 86%; }
+  .s5 .cam-card { width: 62%; top: auto; bottom: 6%; right: 4%; }
+  .s7 .spoken { display: none; }
+  .s7 .carplay { width: 100%; aspect-ratio: 16 / 10.5; }
+}

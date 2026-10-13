@@ -1,0 +1,158 @@
+
+/* ---------- LISTO: the trip laid out on linen ---------- */
+.stage {
+  --ink: #0B0C0E; --sign: #FFD100; --linen: #EFE9DE; --paper: #FBF8F1;
+  --green: #1F3A2E; --gold: #D9B45A; --thread: #b0442e; --brown: #2b2721;
+  font-family: Barlow, system-ui, sans-serif;
+  color: var(--brown);
+}
+.stage .linen { background: url(img/linen.webp) center / 360px repeat, #d9d2c4; box-shadow: inset 0 0 0 1px rgb(43 39 33 / .08); }
+
+/* Passport */
+.stage .ppt {
+  position: absolute; width: 30cqmin; aspect-ratio: 5 / 7;
+  border-radius: 2.2cqmin; background: var(--green);
+  box-shadow: 0 2.4cqmin 5cqmin rgb(0 0 0 / .28);
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4cqmin 0;
+  color: var(--gold); font: 700 max(10px, 2.6cqmin)/1 Barlow; letter-spacing: .3cqmin; text-transform: uppercase;
+}
+.stage .ppt i { width: 11cqmin; height: 11cqmin; border-radius: 50%; box-shadow: inset 0 0 0 .55cqmin var(--gold); }
+
+/* Luggage tags */
+.stage .ptag {
+  position: absolute; background: var(--sign); color: var(--ink);
+  border-radius: 1.6cqmin; padding: 2.4cqmin 3.6cqmin 2.4cqmin 7cqmin;
+  font: 800 5cqmin/1 "Barlow Condensed", sans-serif; white-space: nowrap;
+  box-shadow: 0 1.6cqmin 3.4cqmin rgb(0 0 0 / .25);
+  transform-origin: 2.4cqmin 50%;
+}
+.stage .ptag::before {
+  content: ""; position: absolute; left: 2.5cqmin; top: 50%; width: 2.2cqmin; height: 2.2cqmin; margin-top: -1.1cqmin;
+  border-radius: 50%; background: var(--linen); box-shadow: inset 0 0 0 .45cqmin var(--ink);
+}
+.stage .ptag small { display: block; font: 600 max(10px, 2.8cqmin)/1.3 Barlow; margin-top: .6cqmin; }
+.stage .ptag.pale { background: var(--linen); font-size: 4.2cqmin; }
+.stage .ptag.big { font-size: 6.6cqmin; padding: 3cqmin 4.4cqmin 3cqmin 8.4cqmin; }
+.stage .ptag.big small { font-size: 3.2cqmin; }
+@media (prefers-reduced-motion: no-preference) {
+  .stage .swing { animation: listo-swing 2.8s ease-in-out infinite alternate; }
+  @keyframes listo-swing { from { transform: rotate(calc(var(--r) - 3deg)); } to { transform: rotate(calc(var(--r) + 2deg)); } }
+}
+
+/* Visa, eTA and insurance */
+.stage .visa {
+  position: absolute; width: 38cqmin; aspect-ratio: 1.6; overflow: hidden;
+  border-radius: 2cqmin; padding: 3cqmin;
+  background: linear-gradient(135deg, #e9eef3, #d6e2ea); color: #213b52;
+  box-shadow: 0 2cqmin 4cqmin rgb(0 0 0 / .22);
+  font: 600 max(10px, 2.7cqmin)/1.3 Barlow;
+}
+.stage .visa::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 72% 62%, rgb(33 59 82 / .09) 0 .5cqmin, transparent .5cqmin 1.5cqmin); }
+.stage .visa b { position: relative; display: block; font: 800 4.6cqmin/1 "Barlow Condensed", sans-serif; letter-spacing: .2cqmin; }
+.stage .visa.eta { background: linear-gradient(135deg, #f1f4ec, #dfe8d8); color: #24452f; }
+.stage .ins {
+  position: absolute; width: 24cqmin; padding: 2.6cqmin; border-radius: 1.6cqmin;
+  background: #F5F1E8; box-shadow: 0 1.6cqmin 3.4cqmin rgb(0 0 0 / .2);
+  font: 600 max(10px, 2.7cqmin)/1.3 Barlow; color: #3c352b;
+}
+.stage .ins b { display: block; font: 800 4cqmin/1.1 "Barlow Condensed", sans-serif; }
+
+/* Dashed outlines for what's still missing */
+.stage .out {
+  position: absolute; width: 38cqmin; padding: 3.4cqmin 2.6cqmin; border-radius: 2cqmin;
+  border: .6cqmin dashed #8b7f6a; background: rgb(255 255 255 / .22);
+  text-align: center; font: 600 max(10px, 3cqmin)/1.3 Barlow; color: #5b5244;
+}
+.stage .out b { display: block; font: 800 4.4cqmin/1.1 "Barlow Condensed", sans-serif; text-transform: uppercase; color: #3c352b; margin-bottom: .6cqmin; }
+.stage .out.wide { width: 46cqmin; padding-block: 6cqmin; }
+.stage .out.wake { border-color: var(--thread); background: rgb(255 209 0 / .2); }
+.stage .out.wake b { color: #8a2c1a; }
+
+/* The red thread */
+.stage .thread { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.stage .thread path { fill: none; stroke: var(--thread); stroke-width: 2.5; stroke-dasharray: 7 5; stroke-linecap: round; }
+.stage .knot { position: absolute; width: 3cqmin; height: 3cqmin; margin: -1.5cqmin 0 0 -1.5cqmin; border-radius: 50%; background: var(--thread); box-shadow: 0 0 0 1cqmin rgb(176 68 46 / .18); }
+@media (prefers-reduced-motion: no-preference) {
+  .stage .thread path { animation: listo-thread 1.6s linear infinite; }
+  @keyframes listo-thread { to { stroke-dashoffset: -24; } }
+}
+
+/* Receipt slip */
+.stage .slip {
+  position: absolute; width: min(62cqmin, 82%); padding: 4cqmin; background: var(--paper);
+  box-shadow: 0 2.4cqmin 5cqmin rgb(0 0 0 / .22); font: 600 max(10px, 3cqmin)/1.2 Barlow;
+}
+.stage .slip .l { display: flex; justify-content: space-between; gap: 3cqmin; padding: 1.4cqmin 0; border-bottom: 1px dashed #cfc4b2; }
+.stage .slip .t { display: flex; justify-content: space-between; padding-top: 2.6cqmin; font: 800 8cqmin/1 "Barlow Condensed", sans-serif; }
+
+/* Airport walk: real checkpoint photos with what they'll ask for */
+.stage .walk {
+  position: absolute; top: 0; bottom: -2cqmin; width: 49%;
+  border-radius: 4cqmin 4cqmin 0 0; overflow: hidden; background: #1b1e25;
+  box-shadow: 0 2cqmin 5cqmin rgb(0 0 0 / .25);
+}
+.stage .walk > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.stage .walk::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 12 16 / .78), rgb(10 12 16 / 0) 38%, rgb(10 12 16 / 0) 55%, rgb(10 12 16 / .7)); }
+.stage .walk.second > img { object-position: center 62%; }
+.stage .walk > * { position: relative; z-index: 1; }
+.stage .walk .where { position: absolute; left: 5cqmin; top: 4.5cqmin; font: 400 6.4cqmin/1 "Instrument Serif", serif; color: #F3F1EA; text-shadow: 0 1px 8px rgb(0 0 0 / .5); }
+.stage .sg {
+  position: absolute; left: 3.4cqmin; right: 3.4cqmin; bottom: 5cqmin;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 2.4cqmin; align-items: center;
+  background: var(--sign); color: var(--ink); border-radius: 1.8cqmin; padding: 2.4cqmin 2.8cqmin;
+  box-shadow: 0 1.6cqmin 4cqmin rgb(0 0 0 / .35);
+}
+.stage .sg .n { width: 7cqmin; height: 7cqmin; border-radius: 1.4cqmin; background: var(--ink); color: var(--sign); display: grid; place-items: center; font: 800 4.6cqmin "Barlow Condensed", sans-serif; }
+.stage .sg b { display: block; font: 800 4cqmin/1 "Barlow Condensed", sans-serif; text-transform: uppercase; }
+.stage .sg small { display: block; font: 600 max(10px, 2.6cqmin)/1.3 Barlow; margin-top: .6cqmin; }
+.stage .sg .st { font: 800 max(10px, 2.8cqmin) "Barlow Condensed", sans-serif; letter-spacing: .3cqmin; padding: 1cqmin 1.8cqmin; border-radius: 1cqmin; background: var(--ink); color: var(--sign); text-transform: uppercase; white-space: nowrap; }
+.stage .objs { position: absolute; left: 3.4cqmin; right: 3.4cqmin; bottom: 21cqmin; display: flex; gap: 2.4cqmin; }
+.stage .ob { flex: 1; height: 16cqmin; border-radius: 1.6cqmin; display: grid; place-items: center; font: 700 max(10px, 2.8cqmin) Barlow; text-transform: uppercase; letter-spacing: .2cqmin; box-shadow: 0 1.4cqmin 3cqmin rgb(0 0 0 / .35); }
+.stage .ob.p { background: var(--green); color: var(--gold); }
+.stage .ob.v { background: linear-gradient(135deg, #e9eef3, #d6e2ea); color: #213b52; }
+
+/* Rule sheet with its source and date */
+.stage .sheet, .stage .agent {
+  position: absolute; background: var(--paper); color: var(--ink);
+  box-shadow: 0 -1cqmin 5cqmin rgb(0 0 0 / .18);
+}
+.stage .sheet { left: 7%; right: 7%; top: 10%; bottom: 0; border-radius: 4.4cqmin 4.4cqmin 0 0; padding: 5cqmin 5cqmin 0; }
+.stage .k { display: block; font: 700 max(10px, 2.6cqmin) Barlow; letter-spacing: .45cqmin; text-transform: uppercase; color: #8a7f6a; }
+.stage h3 { margin: 1.4cqmin 0 3cqmin; font: 400 7.4cqmin/1 "Instrument Serif", serif; letter-spacing: 0; }
+.stage .rw { display: flex; justify-content: space-between; gap: 3cqmin; font: 600 max(10px, 3.1cqmin)/2 Barlow; border-bottom: 1px solid #ece4d6; }
+.stage .rw span:last-child { text-align: right; }
+.stage .go { display: flex; justify-content: space-between; align-items: center; margin-top: 4cqmin; padding: 2.8cqmin 3.4cqmin; border-radius: 1.8cqmin; background: var(--sign); font: 800 5cqmin "Barlow Condensed", sans-serif; box-shadow: 0 1.4cqmin 3cqmin rgb(0 0 0 / .18); }
+.stage .go b { display: block; font: inherit; font-size: 4.4cqmin; text-transform: uppercase; line-height: 1; }
+.stage .go small { display: block; font: 600 max(10px, 2.6cqmin) Barlow; }
+
+/* The counter: passport photo, yellow pass, and the agent's sheet */
+.stage .counter { left: 0; top: 0; bottom: 0; width: 34%; border-radius: 4cqmin 4cqmin 0 0; }
+.stage .counter > img { object-position: center 28%; }
+.stage .pass {
+  position: absolute; left: 30%; top: 6%; width: 40%; padding: 4.4cqmin; border-radius: 3cqmin;
+  background: var(--sign); color: var(--ink); box-shadow: 0 3cqmin 6cqmin rgb(0 0 0 / .3); z-index: 1;
+}
+.stage .pass .hd { display: flex; justify-content: space-between; font: 800 max(10px, 2.8cqmin) "Barlow Condensed", sans-serif; letter-spacing: .45cqmin; text-transform: uppercase; }
+.stage .pass .rt { margin-top: 1.6cqmin; font: 800 13cqmin/.9 "Barlow Condensed", sans-serif; }
+.stage .pass .ls { margin-top: 2cqmin; font: 600 max(10px, 2.8cqmin)/1.75 Barlow; }
+.stage .pass .qr { display: flex; gap: 3cqmin; align-items: center; margin-top: 2.6cqmin; font: 600 max(10px, 2.6cqmin)/1.35 Barlow; }
+.stage .pass .qr i { width: 12cqmin; height: 12cqmin; flex: none; background: conic-gradient(#000 25%, transparent 0 50%, #000 0 75%, transparent 0) 0 0 / 3cqmin 3cqmin, var(--sign); border: .8cqmin solid #000; }
+.stage .agent { right: 0; top: 14%; bottom: 0; width: 30%; border-radius: 4cqmin 4cqmin 0 0; padding: 5cqmin 4.4cqmin 0; }
+.stage .agent h3 { font-size: 6.4cqmin; }
+
+/* Narrow stages (phones, and two-thirds cards at tablet width) */
+@container stage (max-width: 440px) {
+  .stage .ppt { width: 26cqmin; }
+  .stage .visa { width: 34cqmin; }
+  .stage .ins { display: none; }
+  /* Documents: passport and cards on top, the missing flight and the tag below */
+  .s2 .visa { left: 40% !important; top: 5% !important; }
+  .s2 .visa.eta { left: 46% !important; top: 33% !important; }
+  .s2 .out.wide { width: 40cqmin; padding-block: 3.4cqmin; left: 5%; right: auto !important; top: 62% !important; }
+  .s2 .ptag { right: 3% !important; top: 76% !important; }
+  .stage .walk { width: 100%; }
+  .stage .walk.second { display: none; }
+  .stage .counter { width: 100%; opacity: .9; }
+  .stage .pass { left: 8%; width: 84%; top: 8%; }
+  .stage .agent { display: none; }
+}

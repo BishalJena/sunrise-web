@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Illustrated card media (art/<slug>/cards.py)
+   The stage is a size container, so a scene places its objects in % of the
+   stage and sizes them in cqmin: they keep their proportions in every card
+   width, and wide cards just give the objects more room.
+   ========================================================================== */
+.card:has(.art) { min-height: 0; }
+.card:has(.art) .card-text { flex: 1; }
+
+.card-media.art {
+  flex: none;
+  height: 330px;
+  padding: 22px 24px 0;
+  align-items: stretch;
+  overflow: hidden;
+}
+.card.full .card-media.art { height: 360px; }
+
+.stage {
+  position: relative;
+  width: 100%;
+  container-type: size;
+  container-name: stage;
+}
+.stage * { box-sizing: border-box; }
+/* Objects lie at an angle: --r on any direct child of the stage */
+.stage > * { transform: rotate(var(--r, 0deg)); }
+.stage > .surface, .stage > .pic { transform: none; }
+
+/* A surface that bleeds off the bottom of the card: the scene sits on it */
+.stage .surface {
+  position: absolute;
+  inset: 0 0 0 0;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.stage .pic { position: absolute; overflow: hidden; }
+.stage .pic > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.stage .abs { position: absolute; }
+/* Site components (lists, panels, widgets) placed in the middle of the stage,
+   or sitting on its bottom edge */
+.stage .center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 16px; transform: none; }
+.stage .bottom { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 16px; transform: none; }
+
+@media (max-width: 680px) {
+  .card-media.art,
+  .card.full .card-media.art { height: 300px; padding: 20px 16px 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stage .lift { transition: transform .5s cubic-bezier(.3, 1.1, .4, 1); }
+  .card:hover .stage .lift { transform: translateY(-4px) rotate(var(--r, 0deg)); }
+}
+
+/* ---------- Lotus E-2: the site's iOS components, fitted to each card ---------- */
+.stage .list.form { width: 100%; max-width: 260px; }
+.stage .list.form .go { padding: 10px 12px 12px; }
+.stage .list.results { width: 58%; max-width: 400px; }
+.stage .radar { width: 34%; max-width: 200px; margin: 0; flex: none; }
+.stage .panel.report { width: 100%; max-width: 380px; gap: 12px; }
+.stage .report .result-head b { font-size: 15px; }
+.stage .report .stat-tiles { grid-template-columns: repeat(3, 1fr); max-width: none; gap: 8px; }
+.stage .report .stat-tile { background: var(--color-card); padding: 12px; }
+.stage .report .stat-tile .num { font-size: 26px; }
+.stage .report .lbl { font-size: 11.5px; color: var(--color-text-secondary); }
+.stage .conf { display: flex; justify-content: space-between; align-items: center; }
+.stage .conf b { font-size: 15px; }
+@media (prefers-reduced-motion: no-preference) {
+  .stage .meter i { animation: e2-meter 2.4s cubic-bezier(.3, 1, .4, 1) both; }
+  @keyframes e2-meter { from { width: 0; } }
+}
+
+/* 4 · private */
+.stage .settings { max-width: 320px; }
+.stage .set-row.danger .lbl { color: var(--accent-red); font-weight: 600; }
+
+/* 5 · the conversation */
+.stage .list.talk { width: 52%; max-width: 360px; }
+.stage .panel.support { width: 40%; max-width: 280px; gap: 10px; }
+.stage .sup { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 12px; background: var(--color-card); }
+.stage .sup .badge { width: 28px; height: 28px; border-radius: 8px; flex: none; display: grid; place-items: center; font-size: 16px; color: #fff; background: var(--c); }
+.stage .sup b { display: block; font-size: 13px; }
+.stage .sup span:not(.badge) { display: block; font-size: 11.5px; color: var(--color-text-secondary); }
+.stage .gentle { font-size: 12.5px; font-style: italic; color: var(--color-text-secondary); }
+
+/* 6 · public info only */
+.stage .list.checks { width: 100%; max-width: 280px; }
+.stage .check-row.no .box { background: var(--color-fill-3); color: var(--color-text-secondary); }
+
+/* 7 · search, report, next steps */
+.stage .center.trio { align-items: flex-start; padding-top: 6px; gap: 2.4%; }
+.stage .step-card { width: 31.5%; display: flex; flex-direction: column; gap: 10px; zoom: .86; }
+.stage .step-n { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--k, var(--brand)); padding-left: 4px; }
+.stage .step-card > .list, .stage .step-card > .panel { width: 100%; max-width: none; }
+
+/* Narrow stages */
+@container stage (max-width: 440px) {
+  .s2 .radar { display: none; }
+  .s2 .list.results { width: 100%; }
+  .s5 .panel.support { display: none; }
+  .s5 .list.talk { width: 100%; }
+  .s7 .step-card { display: none; width: 100%; zoom: 1; }
+  .s7 .step-card:nth-child(2) { display: flex; }
+}
