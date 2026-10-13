@@ -1586,53 +1586,67 @@ textarea.input { min-height: 150px; resize: vertical; line-height: 1.5; }
 .phone-screen.has-shot::before { z-index: 2; }
 .phone-screen.has-shot .shot-ph { padding-top: 40px; }
 
-/* Smaller phones that peek up from the bottom of feature cards */
-.mini-phone {
-  width: 236px;
+/* Smaller phones that peek up from the bottom of feature cards.
+   Each card is a size container, so the phones share its width evenly:
+   --n phones per card, each at most --w-max wide. Everything on the phone
+   scales from --w, and the screen keeps the 9:19.5 shape of the screenshots. */
+.card:has(.peek) { container-type: inline-size; min-height: 0; }
+.card:has(.peek) .card-text { flex: 1; }
+
+.card-media.peek {
+  --n: 1;
+  --w-max: 236px;
+  --pad-x: 24px;
+  --gap: clamp(10px, 3.5cqi, 22px);
+  --w: min(var(--w-max), (100cqi - 2 * var(--pad-x) - (var(--n) - 1) * var(--gap)) / var(--n));
+  --stagger: calc(var(--w) * 0.19);
   flex: none;
-  aspect-ratio: 9 / 19.3;
-  border-radius: 42px;
-  padding: 9px;
+  height: 330px;
+  padding: 30px var(--pad-x) 0;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--gap);
+  overflow: hidden;
+}
+.card-media.peek-2 { --n: 2; }
+.card-media.peek-3 { --n: 3; }
+.card.full .card-media.peek { height: 360px; padding-top: 36px; }
+.card-media.peek-2 .mini-phone:nth-child(2),
+.card-media.peek-3 .mini-phone:nth-child(odd) { margin-top: var(--stagger); }
+
+.mini-phone {
+  width: var(--w, 236px);
+  flex: none;
+  border-radius: calc(var(--w, 236px) * 0.178);
+  padding: calc(var(--w, 236px) * 0.038);
   background: linear-gradient(145deg, #3a3a3e, #1a1a1c 40%, #2a2a2d);
   box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.12), 0 0 0 1px rgb(0 0 0 / 0.2), 0 24px 50px -20px rgb(16 16 32 / 0.4);
   position: relative;
 }
-.mini-phone .shot { border-radius: 34px; }
+.mini-phone .shot {
+  height: auto;
+  aspect-ratio: 9 / 19.5;
+  border-radius: calc(var(--w, 236px) * 0.144);
+  place-items: start center;
+}
 .mini-phone::before {
   content: ""; position: absolute; z-index: 2;
-  top: 19px; left: 50%; transform: translateX(-50%);
-  width: 70px; height: 21px; border-radius: 12px; background: #000;
+  top: calc(var(--w, 236px) * 0.08); left: 50%; transform: translateX(-50%);
+  width: calc(var(--w, 236px) * 0.3); height: calc(var(--w, 236px) * 0.089);
+  border-radius: 999px; background: #000;
 }
-.mini-phone .shot-ph { padding-top: 36px; }
+.mini-phone .shot-ph { padding-top: calc(var(--w, 236px) * 0.31); }
 
-.card-media.peek {
-  flex: none;
-  height: 330px;
-  padding: 30px 24px 0;
-  align-items: flex-start;
-  overflow: hidden;
-  gap: 22px;
-}
-.card-media.peek-2 .mini-phone:nth-child(2) { margin-top: 44px; }
-.card-media.peek-3 .mini-phone:nth-child(1),
-.card-media.peek-3 .mini-phone:nth-child(3) { margin-top: 44px; }
-.card.full .card-media.peek { height: 360px; padding-top: 36px; padding-bottom: 0; }
-.card:has(.peek) { min-height: 0; }
-.card:has(.peek) .card-text { flex: 1; }
-
-@media (max-width: 860px) {
-  .card-media.peek-3 .mini-phone:nth-child(3) { display: none; }
-}
+/* One card per row: the strip's height follows the phones, so small 3-up
+   phones still peek the same share of their height as a single big one. */
 @media (max-width: 680px) {
-  .card-media.peek { height: 300px; }
-  .card-media.peek-2 .mini-phone:nth-child(2),
-  .card-media.peek-3 .mini-phone:nth-child(3) { display: none; }
-  .card-media.peek-3 .mini-phone:nth-child(1) { display: none; }
-  .card-media.peek-3 .mini-phone:nth-child(2) { margin-top: 0; }
-  .mini-phone { width: 220px; }
+  .card-media.peek,
+  .card.full .card-media.peek {
+    --pad-x: 16px;
+    height: min(300px, var(--w) * 1.5 + var(--stagger) + 24px);
+    padding-top: 24px;
+  }
 }
-.mini-phone .shot { place-items: start center; }
-.mini-phone .shot-ph { padding-top: 74px; }
 .waitlist-status:empty { min-height: 0; margin-top: 0; }
 .hero .waitlist-wrap + .hero-note { margin-top: -12px; }
 
