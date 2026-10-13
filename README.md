@@ -87,12 +87,14 @@ Forms work without JavaScript too: a plain form post redirects back with `?joine
 
 ## Deploying
 
-The Pages project is connected to this repo: **every push to `main` deploys**. `public/` is committed, so Cloudflare runs no build step. Rebuild locally before you commit:
+**Every push to `main` deploys**, including merged pull requests. The GitHub Actions workflow `.github/workflows/deploy.yml` uploads the repo to Pages with Wrangler, then checks that the new deployment serves `apps.js` and that the waitlist API answers. `public/` is committed, so there's no build step. Rebuild locally before you commit:
 
 ```bash
 python3 tools/site-builder/build.py
 git add -A && git commit -m "…" && git push
 ```
+
+If a deploy fails, the run is under the repo's **Actions** tab; rerun it there, or start one by hand with **Run workflow**. The workflow needs the secret `CLOUDFLARE_API_TOKEN` (Cloudflare Pages: Edit) and the variable `CLOUDFLARE_ACCOUNT_ID`.
 
 Static files in `public/` are served directly; only `POST /<app>/api/join` runs code. The site is also at `https://bishal-app-pages.pages.dev/`.
 

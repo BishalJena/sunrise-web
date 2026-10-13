@@ -1,0 +1,65 @@
+# Deploys https://bishal.app on every push to main (direct pushes and merged PRs).
+#
+# Uploads the repo as-is to the Cloudflare Pages project "bishal-app-pages": public/ is
+# committed, so there's no build step. Wrangler runs from the repo root so the deploy
+# includes functions/ (the waitlist API) and the D1 binding in wrangler.toml, not only
+# the static files.
+#
+# Needs in GitHub → Settings → Secrets and variables → Actions:
+#   secret   CLOUDFLARE_API_TOKEN   Cloudflare API token with Account → Cloudflare Pages → Edit
+#   variable CLOUDFLARE_ACCOUNT_ID  c36c1405c3e3251015fb394d9375c7ba
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One production deploy at a time; a newer push replaces a queued one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4.149.0 pages deploy \
+            --project-name bishal-app-pages \
+            --branch main \
+            --commit-hash "$GITHUB_SHA" \
+            --commit-message "$(git log -1 --format=%s)" | tee "$RUNNER_TEMP/deploy.log"
+          url=$(grep -oE 'https://[a-z0-9]+\.bishal-app-pages\.pages\.dev' "$RUNNER_TEMP/deploy.log" | tail -1)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      # Checks the deployment it just made, not the live domain, so a slow cache can't hide a bad deploy.
+      - name: Smoke test
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          test -n "$URL" || { echo "No deployment URL in wrangler output"; exit 1; }
+          curl -fsS "$URL/apps.js" > /dev/null
+          # An empty sign-up must be rejected by the Function (400). A 405 means functions/ wasn't deployed.
+          # It never reaches the database: the email is validated first.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$URL/ci-smoke-test/api/join" \
+            -H 'content-type: application/json' -d '{}')
+          echo "POST /ci-smoke-test/api/join → $code"
+          test "$code" = 400
+          echo "Deployed $GITHUB_SHA → $URL" >> "$GITHUB_STEP_SUMMARY"
