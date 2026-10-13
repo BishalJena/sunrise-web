@@ -1,0 +1,202 @@
+/* ==========================================================================
+   Illustrated card media (art/<slug>/cards.py)
+   The stage is a size container, so a scene places its objects in % of the
+   stage and sizes them in cqmin: they keep their proportions in every card
+   width, and wide cards just give the objects more room.
+   ========================================================================== */
+.card:has(.art) { min-height: 0; }
+.card:has(.art) .card-text { flex: 1; }
+
+.card-media.art {
+  flex: none;
+  height: 330px;
+  padding: 22px 24px 0;
+  align-items: stretch;
+  overflow: hidden;
+}
+.card.full .card-media.art { height: 360px; }
+
+.stage {
+  position: relative;
+  width: 100%;
+  container-type: size;
+  container-name: stage;
+}
+.stage * { box-sizing: border-box; }
+/* Objects lie at an angle: --r on any direct child of the stage */
+.stage > * { transform: rotate(var(--r, 0deg)); }
+.stage > .surface, .stage > .pic { transform: none; }
+
+/* A surface that bleeds off the bottom of the card: the scene sits on it */
+.stage .surface {
+  position: absolute;
+  inset: 0 0 0 0;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.stage .pic { position: absolute; overflow: hidden; }
+.stage .pic > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.stage .abs { position: absolute; }
+/* Site components (lists, panels, widgets) placed in the middle of the stage,
+   or sitting on its bottom edge */
+.stage .center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 16px; transform: none; }
+.stage .bottom { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 16px; transform: none; }
+
+@media (max-width: 680px) {
+  .card-media.art,
+  .card.full .card-media.art { height: 300px; padding: 20px 16px 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stage .lift { transition: transform .5s cubic-bezier(.3, 1.1, .4, 1); }
+  .card:hover .stage .lift { transform: translateY(-4px) rotate(var(--r, 0deg)); }
+}
+
+/* ---------- TLDR NEWS: bills on a limewashed wall ---------- */
+.stage {
+  --ink: #16120D; --ink2: #4B4237; --soga: #8A4F22; --bill: #EEE8DC; --lime: #E6DDCD; --red: #C8322A;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--ink);
+}
+.stage .wall { background: url(img/wall.webp) center / cover, var(--lime); box-shadow: inset 0 0 0 1px rgb(22 18 13 / .06); }
+
+/* A bill: paper pasted on the wall */
+.stage .bill {
+  position: absolute; padding: 2.2cqmin 2.6cqmin; border-radius: .6cqmin;
+  background: url(img/bill.webp) center / cover, var(--bill);
+  box-shadow: 0 .4cqmin .8cqmin rgb(22 18 13 / .12), 0 2cqmin 4cqmin -1.6cqmin rgb(22 18 13 / .3);
+  display: flex; flex-direction: column; justify-content: center; gap: .8cqmin; overflow: hidden;
+}
+.stage .bill.rum b { font: 900 max(13px, 6cqmin) / .9 "Big Shoulders Display", sans-serif; letter-spacing: .1cqmin; white-space: nowrap; }
+.stage .bill.rum.red b { color: var(--red); }
+.stage .bill.rum small { font: 700 max(7px, 1.7cqmin) / 1 "Plus Jakarta Sans", sans-serif; letter-spacing: .25cqmin; text-transform: uppercase; color: var(--ink2); white-space: nowrap; }
+.stage .bill.story b { font: 600 max(11px, 3.4cqmin) / 1.12 Newsreader, Georgia, serif; }
+.stage .bill.story small { font: 600 max(8px, 2cqmin) "Plus Jakarta Sans", sans-serif; color: var(--ink2); }
+.stage .bill.story p { margin: 0; font: 500 max(10px, 2.8cqmin) / 1.4 Newsreader, Georgia, serif; color: var(--ink2); }
+
+/* Marks: shape and word, never colour alone */
+.stage .sig { display: inline-flex; align-items: center; gap: 1.2cqmin; font: 700 max(8px, 2cqmin) "Plus Jakarta Sans", sans-serif; letter-spacing: .22cqmin; text-transform: uppercase; color: var(--ink); }
+.stage .sig i { position: relative; width: 2.4cqmin; height: 2.4cqmin; min-width: 7px; min-height: 7px; border-radius: 50%; flex: none; }
+.stage .sig.ok i { background: var(--ink); }
+.stage .sig.dev i { box-shadow: inset 0 0 0 .35cqmin var(--ink); background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); }
+.stage .sig.un i { border: .35cqmin dashed var(--ink); }
+.stage .sig.no i { box-shadow: inset 0 0 0 .35cqmin var(--ink); }
+.stage .sig.no i::after { content: ""; position: absolute; left: 50%; top: 10%; bottom: 10%; width: .35cqmin; background: var(--ink); transform: rotate(45deg); }
+.stage .bill.struck b { text-decoration: line-through; text-decoration-thickness: .3cqmin; color: var(--ink2); }
+
+/* A wall of eight */
+.stage .grid { position: absolute; left: 5%; right: 5%; bottom: 3%; top: 34%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr); gap: 2.4cqmin 3cqmin; transform: none; }
+.stage .grid .bill { position: relative; transform: rotate(var(--r)); padding: 1.4cqmin 2cqmin; }
+.stage .grid .bill.rum b { font-size: max(11px, 4.6cqmin); }
+.stage .grid .bill.story b { font-size: max(8px, 2.4cqmin); }
+.stage .grid .bill.story .sig { font-size: max(6px, 1.5cqmin); }
+
+/* The count: bills left are stories left */
+.stage .count { position: absolute; left: 6%; top: 5%; display: flex; flex-direction: column; gap: .6cqmin; transform: none; }
+.stage .since { font: 700 max(8px, 2.2cqmin) "Plus Jakarta Sans", sans-serif; letter-spacing: .3cqmin; text-transform: uppercase; color: var(--soga); }
+.stage .count s { font: 500 max(11px, 3.4cqmin) Newsreader, serif; color: var(--soga); text-decoration-thickness: .3cqmin; }
+.stage .count .big { font: 600 max(18px, 6.6cqmin) / .9 Newsreader, Georgia, serif; }
+.stage .count .big em { font: italic 400 max(36px, 15cqmin) / .8 Newsreader, Georgia, serif; color: var(--soga); margin-right: 1cqmin; }
+.stage .count.small .big em { font-size: max(28px, 11cqmin); }
+
+/* The noise, up close */
+.stage .bill.rum[style*="width"] { padding: 3.6cqmin 4cqmin; }
+.stage .s2 .bill.rum b, .s2 .bill.rum b { font-size: max(20px, 10cqmin); }
+.s2 .bill.rum small { font-size: max(8px, 2.2cqmin); }
+.stage .hint { position: absolute; right: 5%; bottom: 5%; font: italic 500 max(12px, 3.4cqmin) Newsreader, serif; color: var(--soga); }
+
+/* Peel the corner: the calm story is underneath */
+.stage .bill.under { justify-content: flex-end; align-items: flex-end; text-align: right; padding: 5cqmin; background: #F3EEE4; }
+.stage .bill.under b { font-size: max(13px, 4.4cqmin); max-width: 40%; }
+.stage .bill.under .sig { max-width: 48%; }
+.stage .peel { position: absolute; transform: rotate(-1.5deg); filter: drop-shadow(0 2cqmin 3cqmin rgb(22 18 13 / .3)); }
+.stage .peel .front {
+  position: absolute; inset: 0; padding: 5cqmin; display: flex; flex-direction: column; gap: 1.4cqmin;
+  background: url(img/bill.webp) center / cover, var(--bill); border-radius: .6cqmin;
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 40% 100%, 0 100%);
+}
+.stage .peel .front b { font: 900 max(26px, 12cqmin) / .88 "Big Shoulders Display", sans-serif; }
+.stage .peel .front small { font: 700 max(8px, 2.2cqmin) "Plus Jakarta Sans", sans-serif; letter-spacing: .3cqmin; text-transform: uppercase; color: var(--ink2); }
+.stage .peel .curl {
+  position: absolute; left: 40%; top: 40%; width: 60%; height: 60%;
+  background: linear-gradient(135deg, #fbf8f1 0%, #ebe3d4 45%, #c9bea9 100%);
+  clip-path: polygon(0 100%, 100% 0, 0 0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stage .peel .front { animation: tldr-peel 5s cubic-bezier(.6, 0, .3, 1) infinite; }
+  .stage .peel .curl { animation: tldr-curl 5s cubic-bezier(.6, 0, .3, 1) infinite; }
+  @keyframes tldr-peel {
+    0%, 45% { clip-path: polygon(0 0, 100% 0, 100% 40%, 40% 100%, 0 100%); }
+    65%, 80% { clip-path: polygon(0 0, 100% 0, 100% 84%, 84% 100%, 0 100%); }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 40%, 40% 100%, 0 100%); }
+  }
+  @keyframes tldr-curl {
+    0%, 45% { left: 40%; top: 40%; width: 60%; height: 60%; }
+    65%, 80% { left: 84%; top: 84%; width: 16%; height: 16%; }
+    100% { left: 40%; top: 40%; width: 60%; height: 60%; }
+  }
+}
+
+/* Four marks */
+.stage .marks { position: absolute; inset: 7% 5% 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 3cqmin; transform: none; }
+.stage .marks .bill { position: relative; transform: rotate(var(--r)); padding: 3.4cqmin; gap: 1.6cqmin; }
+.stage .marks .bill b { font-size: max(12px, 4.4cqmin); }
+.stage .marks .sig { font-size: max(9px, 2.4cqmin); }
+
+/* Sharing the checked version */
+.stage .bill.checked { left: 5%; top: 7%; bottom: 0; width: 44%; justify-content: flex-start; padding: 4.4cqmin; border-radius: .6cqmin .6cqmin 0 0; }
+.stage .bill.checked b { font-size: max(15px, 5.6cqmin); }
+.stage .why { margin-top: 1.4cqmin; font: 700 max(8px, 2cqmin) "Plus Jakarta Sans", sans-serif; letter-spacing: .3cqmin; text-transform: uppercase; color: var(--soga); }
+.stage .chat { position: absolute; right: 5%; top: 5%; bottom: 0; width: 42%; display: flex; flex-direction: column; gap: 2cqmin; padding: 3cqmin; border-radius: 3cqmin 3cqmin 0 0; background: #F7F3EC; box-shadow: 0 2cqmin 5cqmin rgb(22 18 13 / .22); }
+.stage .chat-hd { display: flex; align-items: center; gap: 2cqmin; padding-bottom: 2cqmin; border-bottom: 1px solid #E4DCCD; }
+.stage .chat-hd i { width: 6cqmin; height: 6cqmin; border-radius: 50%; background: #CDBB9C; }
+.stage .chat-hd b { display: block; font-size: max(11px, 3cqmin); }
+.stage .chat-hd small { font-size: max(9px, 2.3cqmin); color: var(--ink2); }
+.stage .bubble { max-width: 88%; padding: 2cqmin 2.6cqmin; border-radius: 2.6cqmin; background: #fff; font: 500 max(10px, 2.6cqmin) / 1.35 "Plus Jakarta Sans", sans-serif; box-shadow: 0 .4cqmin 1cqmin rgb(0 0 0 / .06); display: flex; flex-direction: column; gap: .8cqmin; }
+.stage .bubble small { font-size: max(8px, 2cqmin); color: var(--ink2); }
+.stage .bubble .noise { color: var(--red); font-weight: 700; }
+.stage .bubble.out { align-self: flex-end; background: var(--bill) url(img/bill.webp) center / cover; }
+.stage .bubble.out b { font: 600 max(11px, 3.2cqmin) / 1.15 Newsreader, serif; }
+.stage .bubble.short { align-self: flex-start; }
+
+/* His city and topics */
+.stage .city { position: absolute; left: 7%; top: 7%; display: flex; flex-direction: column; gap: .8cqmin; transform: none; }
+.stage .city b { font: 600 max(28px, 12cqmin) / .95 Newsreader, Georgia, serif; }
+.stage .city small { font: 500 max(9px, 2.6cqmin) "Plus Jakarta Sans", sans-serif; color: var(--ink2); }
+.stage .topics { position: absolute; left: 7%; right: 7%; bottom: 8%; display: flex; flex-wrap: wrap; gap: 2.4cqmin; transform: none; }
+.stage .topics span {
+  padding: 1.8cqmin 2.8cqmin; border-radius: .6cqmin; background: url(img/bill.webp) center / cover, var(--bill);
+  font: 900 max(11px, 3.8cqmin) / 1 "Big Shoulders Display", sans-serif; letter-spacing: .1cqmin; text-transform: uppercase;
+  box-shadow: 0 1cqmin 2cqmin -1cqmin rgb(22 18 13 / .35);
+}
+.stage .topics span:nth-child(odd) { transform: rotate(-2deg); } .stage .topics span:nth-child(even) { transform: rotate(1.5deg); }
+.stage .topics span.on { background: var(--ink); color: #F3EEE4; }
+
+/* Three editions: halfway, one left, clean */
+.stage .edition { position: absolute; top: 0; bottom: 0; width: 31.33%; transform: none; }
+.stage .edition .surface { border-radius: 16px 16px 0 0; }
+.stage .grid.mini { top: 36%; left: 6%; right: 6%; gap: 1.8cqmin 2cqmin; }
+.stage .grid.mini .bill { padding: 1cqmin 1.4cqmin; gap: .4cqmin; }
+.stage .grid.mini .bill.rum b { font-size: max(9px, 3cqmin); }
+.stage .grid.mini .bill.rum small { display: none; }
+.stage .grid.mini .bill.story b { font-size: max(7px, 1.8cqmin); }
+.stage .edition .light { position: absolute; inset: 0; border-radius: 16px 16px 0 0; background: radial-gradient(90% 60% at 90% 0%, rgb(255 214 140 / .75), transparent 70%); }
+.stage .clean-word em { font-size: max(34px, 13cqmin) !important; margin: 0 !important; }
+.stage .caught { margin-top: 1cqmin; font: 500 max(9px, 2.4cqmin) "Plus Jakarta Sans", sans-serif; color: var(--ink2); }
+.stage .painted {
+  position: absolute; left: 8%; right: 8%; bottom: 16%; padding: 3cqmin 0; text-align: center;
+  font: 900 max(16px, 6cqmin) / 1 "Big Shoulders Display", sans-serif; letter-spacing: .4cqmin; text-transform: uppercase;
+  color: rgb(138 79 34 / .55); border-top: .4cqmin solid rgb(138 79 34 / .3); border-bottom: .4cqmin solid rgb(138 79 34 / .3);
+}
+
+/* Narrow stages */
+@container stage (max-width: 440px) {
+  .s2 .bill.rum b { font-size: max(16px, 7.4cqmin); }
+  .s5 .bill.checked { display: none; }
+  .s5 .chat { left: 6%; right: 6%; width: auto; }
+  .s4 .marks .bill small { display: none; }
+  .s7 .edition { width: 48%; }
+  .s7 .edition:nth-child(2) { display: none; }
+  .s7 .edition.clean { left: 51% !important; }
+}

@@ -26,6 +26,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 APPS_DIR = os.path.join(HERE, "apps")
 ASSETS_DIR = os.path.join(HERE, "assets")
+ART_DIR = os.path.join(HERE, "art")
 PUBLIC_DIR = os.path.join(ROOT, "public")
 
 # Shared settings -------------------------------------------------------------
@@ -46,7 +47,7 @@ esc = html.escape
 
 # Building blocks -------------------------------------------------------------
 def theme_fonts(app):
-    links = app.get("font_links", ())
+    links = (*app.get("font_links", ()), *app.get("art_fonts", ()))
     if not links:
         return ""
     return "".join(f'  <link rel="stylesheet" href="{href}">\n' for href in links)
@@ -117,7 +118,7 @@ def head(app, title, description):
   <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/app-icon.svg">
 {FONTS}{theme_fonts(app)}  <link rel="stylesheet" href="assets/styles.css">
-  <style>{theme_css(app)}</style>
+{'  <link rel="stylesheet" href="assets/art/art.css">' + chr(10) if app.get("art") else ""}  <style>{theme_css(app)}</style>
   <script>if (scrollY < 8) document.documentElement.classList.add("nav-top");</script>
 </head>
 '''
@@ -211,6 +212,28 @@ def shot(app, key, label):
 
 
 def card(app, i, f):
+    art = app.get("art", {}).get(i)
+    if art:
+        media = f'''          <div class="card-media art" aria-hidden="true">
+            <div class="stage s{i}">
+{art.strip(chr(10))}
+            </div>
+          </div>'''
+    else:
+        media = peek(app, i, f)
+    return f'''        <figure class="card {f["size"]}" style="--k: var(--accent-{f["color"]})">
+          <figcaption class="card-text">
+            <span class="kicker">{esc(f["kicker"])}</span>
+            <h2>{esc(f["title"])}</h2>
+            <p>{esc(f["text"])}</p>
+          </figcaption>
+{media}
+        </figure>
+'''
+
+
+def peek(app, i, f):
+    """Phone screenshots peeking up from the bottom of a card."""
     n = SHOTS_PER_SIZE[f["size"]]
     keys = [f"card-{i}"] if n == 1 else [f"card-{i}-{j}" for j in range(1, n + 1)]
     labels = f.get("shots") or [f["title"]] * n
@@ -218,17 +241,9 @@ def card(app, i, f):
         f'''            <div class="mini-phone">
             {shot(app, k, lbl)}
             </div>''' for k, lbl in zip(keys, labels))
-    return f'''        <figure class="card {f["size"]}" style="--k: var(--accent-{f["color"]})">
-          <figcaption class="card-text">
-            <span class="kicker">{esc(f["kicker"])}</span>
-            <h2>{esc(f["title"])}</h2>
-            <p>{esc(f["text"])}</p>
-          </figcaption>
-          <div class="card-media peek peek-{n}">
+    return f'''          <div class="card-media peek peek-{n}">
 {phones}
-          </div>
-        </figure>
-'''
+          </div>'''
 
 
 def chip(cls, icon, color, title, sub):
@@ -489,7 +504,21 @@ def load_app(slug):
     spec.loader.exec_module(mod)
     app = mod.APP
     app["slug"] = slug
+    app["art"], app["art_fonts"] = load_art(slug)
     return app
+
+
+def load_art(slug):
+    """Illustrated card media from art/<slug>/cards.py: CARDS maps a card's
+    1-based position to the HTML drawn in place of its phone screenshots, and
+    FONTS lists any extra stylesheet links the scenes need."""
+    path = os.path.join(ART_DIR, slug, "cards.py")
+    if not os.path.exists(path):
+        return {}, ()
+    spec = importlib.util.spec_from_file_location(f"{slug}-art", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.CARDS, getattr(mod, "FONTS", ())
 
 
 def build(slug):
@@ -499,6 +528,15 @@ def build(slug):
     shutil.rmtree(os.path.join(out, "assets", "screens"), ignore_errors=True)
     for name in ("styles.css", "site.js"):
         shutil.copyfile(os.path.join(ASSETS_DIR, name), os.path.join(out, "assets", name))
+    shutil.rmtree(os.path.join(out, "assets", "art"), ignore_errors=True)
+    if app["art"]:
+        # Shared stage rules first, then the app's own scenes and images.
+        dest = os.path.join(out, "assets", "art")
+        shutil.copytree(os.path.join(ART_DIR, slug), dest, ignore=shutil.ignore_patterns("*.py", "__pycache__", "art.css"))
+        with open(os.path.join(dest, "art.css"), "w") as f:
+            for src in (os.path.join(ART_DIR, "stage.css"), os.path.join(ART_DIR, slug, "art.css")):
+                with open(src) as part:
+                    f.write(part.read())
     with open(os.path.join(out, "assets", "app-icon.svg"), "w") as f:
         f.write(icon_svg(app))
     build_index(app)

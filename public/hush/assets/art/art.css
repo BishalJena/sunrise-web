@@ -1,0 +1,200 @@
+/* ==========================================================================
+   Illustrated card media (art/<slug>/cards.py)
+   The stage is a size container, so a scene places its objects in % of the
+   stage and sizes them in cqmin: they keep their proportions in every card
+   width, and wide cards just give the objects more room.
+   ========================================================================== */
+.card:has(.art) { min-height: 0; }
+.card:has(.art) .card-text { flex: 1; }
+
+.card-media.art {
+  flex: none;
+  height: 330px;
+  padding: 22px 24px 0;
+  align-items: stretch;
+  overflow: hidden;
+}
+.card.full .card-media.art { height: 360px; }
+
+.stage {
+  position: relative;
+  width: 100%;
+  container-type: size;
+  container-name: stage;
+}
+.stage * { box-sizing: border-box; }
+/* Objects lie at an angle: --r on any direct child of the stage */
+.stage > * { transform: rotate(var(--r, 0deg)); }
+.stage > .surface, .stage > .pic { transform: none; }
+
+/* A surface that bleeds off the bottom of the card: the scene sits on it */
+.stage .surface {
+  position: absolute;
+  inset: 0 0 0 0;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.stage .pic { position: absolute; overflow: hidden; }
+.stage .pic > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.stage .abs { position: absolute; }
+/* Site components (lists, panels, widgets) placed in the middle of the stage,
+   or sitting on its bottom edge */
+.stage .center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 16px; transform: none; }
+.stage .bottom { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 16px; transform: none; }
+
+@media (max-width: 680px) {
+  .card-media.art,
+  .card.full .card-media.art { height: 300px; padding: 20px 16px 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stage .lift { transition: transform .5s cubic-bezier(.3, 1.1, .4, 1); }
+  .card:hover .stage .lift { transform: translateY(-4px) rotate(var(--r, 0deg)); }
+}
+
+/* ---------- HUSH: the room, the door hanger, the report ---------- */
+.stage {
+  --ink: #17120E; --paper: #FBF8F1; --linen: #F4EEE3; --amber: #E8A33A; --glow: #FFD58A; --stone: #7a6e5c; --rust: #A8442E;
+  font-family: Geist, -apple-system, sans-serif; color: var(--ink);
+}
+
+/* The live camera: a stranger's room, cold until she has looked */
+.stage .cam { inset: 0; border-radius: 22px 22px 0 0; background: #0b0a09; }
+.stage .cam > img { object-position: var(--pos, 50% 62%); }
+.stage .cam.warm {
+  -webkit-mask: radial-gradient(circle, #000 0 32%, transparent 62%) no-repeat 62% 78% / 120cqmin 120cqmin;
+          mask: radial-gradient(circle, #000 0 32%, transparent 62%) no-repeat 62% 78% / 120cqmin 120cqmin;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stage .cam.warm { animation: hush-look 9s ease-in-out infinite alternate; }
+  @keyframes hush-look {
+    0% { -webkit-mask-position: 0% 100%; mask-position: 0% 100%; }
+    50% { -webkit-mask-position: 80% 85%; mask-position: 80% 85%; }
+    100% { -webkit-mask-position: 45% 30%; mask-position: 45% 30%; }
+  }
+}
+
+/* The door hanger: hangs from the top of the card on a cord */
+.stage .hgr { position: absolute; left: 50%; top: 0; transform: translateX(-50%); transform-origin: 50% 0; display: flex; flex-direction: column; align-items: center; z-index: 2; }
+.stage .hgr .string { width: .5cqmin; height: 5cqmin; background: linear-gradient(#c9a26a, #a87f45); }
+.stage .hcard {
+  position: relative; margin-top: -1cqmin;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  background: var(--paper); color: var(--ink); border-radius: 2.6cqmin;
+  box-shadow: 0 2cqmin 6cqmin rgb(0 0 0 / .4);
+}
+.stage .stitch { position: absolute; inset: 1.6cqmin; border: .4cqmin dashed var(--amber); border-radius: 1.6cqmin; pointer-events: none; }
+.stage .hgr.small .hcard {
+  width: 30cqmin; min-height: 42cqmin; padding: 13cqmin 2.6cqmin 4cqmin;
+  -webkit-mask: radial-gradient(circle at 50% 6.4cqmin, transparent 3cqmin, #000 3.2cqmin);
+          mask: radial-gradient(circle at 50% 6.4cqmin, transparent 3cqmin, #000 3.2cqmin);
+}
+.stage .hgr.small .t { font: 400 max(14px, 5.4cqmin) / 1.02 "Instrument Serif", serif; }
+.stage .hgr .u { font: 500 max(10px, 2.6cqmin) / 1.3 Geist, sans-serif; color: var(--stone); margin-top: 1.6cqmin; }
+.stage .hgr .bar { width: 70%; height: .9cqmin; margin-top: 2.4cqmin; border-radius: 1cqmin; background: #EDE5D7; overflow: hidden; }
+.stage .hgr .bar i { display: block; height: 100%; width: 100%; background: var(--amber); transform-origin: left; transform: scaleX(var(--to, .4)); }
+@media (prefers-reduced-motion: no-preference) {
+  .stage .hgr.sway { animation: hush-sway 3.2s ease-in-out infinite; }
+  @keyframes hush-sway { 0%, 100% { transform: translateX(-50%) rotate(-2.5deg); } 50% { transform: translateX(-50%) rotate(2.5deg); } }
+  .stage .hgr .bar i { animation: hush-fill 4s ease-in-out infinite; }
+  @keyframes hush-fill { from { transform: scaleX(.05); } to { transform: scaleX(var(--to, 1)); } }
+}
+.stage .hgr.big .hcard {
+  width: 46cqmin; padding: 15cqmin 4cqmin 4.4cqmin;
+  -webkit-mask: radial-gradient(circle at 50% 7.4cqmin, transparent 3.6cqmin, #000 3.8cqmin);
+          mask: radial-gradient(circle at 50% 7.4cqmin, transparent 3.6cqmin, #000 3.8cqmin);
+}
+.stage .hgr.big .t { font: 400 max(16px, 7cqmin) / 1 "Instrument Serif", serif; }
+.stage .hgr.big .u { font-size: max(10px, 2.9cqmin); color: #4d473e; }
+.stage .hgr .hand { font: 700 max(13px, 4.6cqmin) Caveat, cursive; color: #8a6a3a; margin-top: 2cqmin; }
+.stage .hgr .b1, .stage .hgr .b2 {
+  align-self: stretch; display: grid; place-items: center; height: 8.6cqmin; margin-top: 3cqmin; border-radius: 99px;
+  font: 600 max(10px, 3cqmin) Geist, sans-serif;
+}
+.stage .hgr .b1 { background: var(--ink); color: var(--linen); }
+.stage .hgr .b2 { height: 7.6cqmin; margin-top: 1.8cqmin; box-shadow: inset 0 0 0 .35cqmin #d8cfc0; }
+.stage .hgr.dark .hcard { background: #1f1813; color: var(--linen); }
+.stage .hgr.dark .stitch { border-color: var(--rust); }
+.stage .hgr.dark .u { color: #cfc6b6; }
+.stage .hgr.dark .b1 { background: var(--linen); color: var(--ink); }
+.stage .hgr .ev { align-self: stretch; height: 15cqmin; margin-top: 2.6cqmin; border-radius: 1.6cqmin; background: url(img/evidence.webp) center / cover; }
+.stage .hgr.solo .hcard { width: 52cqmin; }
+
+/* Paper tags for the devices on the room's Wi-Fi */
+.stage .dtag {
+  position: absolute; display: flex; align-items: center; gap: 1.4cqmin; white-space: nowrap;
+  padding: 1.5cqmin 2.6cqmin; border-radius: 1.4cqmin; background: var(--paper); color: var(--ink);
+  font: 600 max(10px, 3cqmin) Geist, sans-serif; box-shadow: 0 1cqmin 3cqmin rgb(0 0 0 / .35);
+}
+.stage .dtag i { width: 2.2cqmin; height: 2.2cqmin; border-radius: 50%; background: var(--amber); }
+.stage .dtag.odd { box-shadow: 0 0 0 .5cqmin var(--rust), 0 1cqmin 3cqmin rgb(0 0 0 / .35); }
+.stage .dtag.odd i { background: var(--rust); }
+@media (prefers-reduced-motion: no-preference) {
+  .stage .dtag { animation: hush-tag .6s cubic-bezier(.3, 1.4, .5, 1) both; }
+  .stage .dtag:nth-of-type(2) { animation-delay: .15s; } .stage .dtag:nth-of-type(3) { animation-delay: .3s; }
+  .stage .dtag:nth-of-type(4) { animation-delay: .45s; } .stage .dtag:nth-of-type(5) { animation-delay: .6s; }
+  @keyframes hush-tag { from { opacity: 0; transform: translateY(2cqmin) scale(.9); } }
+}
+
+/* A closer look: a calm amber ring, not an alarm */
+.stage .ring {
+  position: absolute; width: 24cqmin; height: 24cqmin; border-radius: 50%; transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 .6cqmin var(--glow), 0 0 5cqmin 1cqmin rgb(232 163 58 / .55), inset 0 0 4cqmin rgb(232 163 58 / .3);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stage .ring { animation: hush-ring 2.4s ease-in-out infinite; }
+  @keyframes hush-ring { 50% { transform: translate(-50%, -50%) scale(1.08); } }
+}
+.stage .caption { position: absolute; text-align: right; font: 400 max(15px, 5.6cqmin) / 1 "Instrument Serif", serif; color: #F3EEE4; text-shadow: 0 1px 10px rgb(0 0 0 / .6); }
+.stage .caption small { display: block; margin-top: 1cqmin; font: 500 max(10px, 2.6cqmin) Geist, sans-serif; color: #cfc6b6; }
+
+/* The exposed spots, checked one by one */
+.stage .spots { position: absolute; right: 6%; bottom: 8%; display: grid; gap: 2cqmin; justify-items: end; }
+.stage .chk {
+  display: flex; align-items: center; gap: 1.8cqmin; padding: 1.8cqmin 3cqmin 1.8cqmin 2cqmin; border-radius: 99px;
+  background: rgb(251 248 241 / .14); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 .3cqmin rgb(251 248 241 / .3);
+  color: #F3EEE4; font: 600 max(10px, 3.2cqmin) Geist, sans-serif;
+}
+.stage .chk i { width: 5cqmin; height: 5cqmin; border-radius: 50%; display: grid; place-items: center; font: 700 max(9px, 2.8cqmin) Geist; font-style: normal; }
+.stage .chk.done i { background: var(--amber); color: var(--ink); }
+.stage .chk.now i { box-shadow: inset 0 0 0 .5cqmin var(--glow); }
+
+/* The report, the share sheet, the message */
+.stage .paperbg { background: linear-gradient(160deg, #EFEAE1, #E4DDD1); }
+.stage .rep, .stage .sharesheet, .stage .msg { position: absolute; background: var(--paper); box-shadow: 0 2cqmin 6cqmin -1cqmin rgb(23 18 14 / .3); }
+.stage .rep { left: 4%; top: 7%; bottom: 0; width: 33%; padding: 4.4cqmin 4.4cqmin 0; border-radius: 3cqmin 3cqmin 0 0; }
+.stage .rep .k { display: block; font: 600 max(9px, 2.4cqmin) Geist, sans-serif; letter-spacing: .4cqmin; text-transform: uppercase; color: var(--stone); }
+.stage .rep .k.found { color: var(--rust); }
+.stage .rep h3 { margin: 1.4cqmin 0 .6cqmin; font: 400 max(16px, 6.4cqmin) / 1 "Instrument Serif", serif; letter-spacing: 0; }
+.stage .rep .hand { font: 700 max(12px, 4cqmin) Caveat, cursive; color: #8a6a3a; }
+.stage .rep .evi { display: block; height: 18cqmin; margin: 2.4cqmin 0 1.6cqmin; border-radius: 1.8cqmin; background: url(img/evidence.webp) center / cover; }
+.stage .rep .row { display: flex; justify-content: space-between; gap: 3cqmin; font: 500 max(10px, 2.8cqmin) / 1.9 Geist, sans-serif; border-top: 1px solid #E6DED0; }
+.stage .rep .row span:last-child { color: var(--stone); text-align: right; }
+.stage .sharesheet { left: 40%; top: 20%; width: 27%; padding: 3.6cqmin; border-radius: 4cqmin; background: rgb(242 242 247 / .98); font-family: -apple-system, BlinkMacSystemFont, Inter, sans-serif; }
+.stage .sh-hd { display: flex; gap: 2.6cqmin; align-items: center; padding-bottom: 3cqmin; margin-bottom: 3cqmin; border-bottom: 1px solid #E5E5EA; }
+.stage .sh-hd i { width: 8cqmin; height: 8cqmin; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 .5cqmin var(--amber); background: var(--paper); }
+.stage .sh-hd b { display: block; font-size: max(11px, 3.2cqmin); }
+.stage .sh-hd small { font-size: max(9px, 2.6cqmin); color: #8E8E93; }
+.stage .apps { display: flex; justify-content: space-between; }
+.stage .apps span { display: flex; flex-direction: column; align-items: center; gap: 1.2cqmin; width: 24%; font-size: max(9px, 2.3cqmin); }
+.stage .apps i { width: 10cqmin; height: 10cqmin; border-radius: 2.6cqmin; background: var(--c); }
+.stage .apps span:first-child i { box-shadow: 0 0 0 .6cqmin #fff, 0 0 0 1.1cqmin #FF5A5F; }
+.stage .msg { right: 4%; top: 12%; width: 28%; padding: 3.6cqmin; border-radius: 3.6cqmin; }
+.stage .msg .to { display: block; padding-bottom: 2cqmin; margin-bottom: 2.4cqmin; border-bottom: 1px solid #E6DED0; font: 600 max(10px, 2.6cqmin) Geist, sans-serif; color: var(--stone); }
+.stage .msg p { margin: 0; padding: 2.6cqmin 3cqmin; border-radius: 3cqmin 3cqmin 3cqmin .8cqmin; background: #F2ECE1; font: 500 max(10px, 3cqmin) / 1.45 Geist, sans-serif; }
+.stage .msg p.pt { margin-top: 1.6cqmin; font-style: italic; color: var(--stone); }
+
+/* Narrow stages */
+@container stage (max-width: 440px) {
+  .s5 .hgr.big .hcard { width: 44cqmin; padding-inline: 3cqmin; }
+  .s5 .hgr.big .t { font-size: max(14px, 6cqmin); }
+  .s5 .hgr:not(.dark) .u { display: none; }
+  .s7 .sharesheet { display: none; }
+  .s7 .rep { width: 54%; left: 3%; }
+  .s7 .msg { width: 42%; right: 3%; top: 16%; }
+  .s7 .msg .pt { display: none; }
+  .s2 .dtag.odd { right: 3% !important; top: 80% !important; }
+}

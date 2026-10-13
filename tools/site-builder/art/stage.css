@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Illustrated card media (art/<slug>/cards.py)
+   The stage is a size container, so a scene places its objects in % of the
+   stage and sizes them in cqmin: they keep their proportions in every card
+   width, and wide cards just give the objects more room.
+   ========================================================================== */
+.card:has(.art) { min-height: 0; }
+.card:has(.art) .card-text { flex: 1; }
+
+.card-media.art {
+  flex: none;
+  height: 330px;
+  padding: 22px 24px 0;
+  align-items: stretch;
+  overflow: hidden;
+}
+.card.full .card-media.art { height: 360px; }
+
+.stage {
+  position: relative;
+  width: 100%;
+  container-type: size;
+  container-name: stage;
+}
+.stage * { box-sizing: border-box; }
+/* Objects lie at an angle: --r on any direct child of the stage */
+.stage > * { transform: rotate(var(--r, 0deg)); }
+.stage > .surface, .stage > .pic { transform: none; }
+
+/* A surface that bleeds off the bottom of the card: the scene sits on it */
+.stage .surface {
+  position: absolute;
+  inset: 0 0 0 0;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.stage .pic { position: absolute; overflow: hidden; }
+.stage .pic > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.stage .abs { position: absolute; }
+/* Site components (lists, panels, widgets) placed in the middle of the stage,
+   or sitting on its bottom edge */
+.stage .center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 16px; transform: none; }
+.stage .bottom { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 16px; transform: none; }
+
+@media (max-width: 680px) {
+  .card-media.art,
+  .card.full .card-media.art { height: 300px; padding: 20px 16px 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stage .lift { transition: transform .5s cubic-bezier(.3, 1.1, .4, 1); }
+  .card:hover .stage .lift { transform: translateY(-4px) rotate(var(--r, 0deg)); }
+}
