@@ -63,6 +63,24 @@
 }
 .stage .linen { background: url(img/linen.webp) center / 360px repeat, #d9d2c4; box-shadow: inset 0 0 0 1px rgb(43 39 33 / .08); }
 
+/* Hero: checkpoint 1 of the airport walk, inside the phone frame. */
+.hero-stage { height: 100%; overflow: hidden; border-radius: inherit; }
+.hero-stage .hero-walk { position: absolute; inset: 0; overflow: hidden; background: #1b1e25; }
+.hero-stage .hero-walk > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 34%; }
+.hero-stage .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 12 16 / .72), rgb(10 12 16 / 0) 36%, rgb(10 12 16 / .08) 52%, rgb(10 12 16 / .78)); }
+.hero-stage .dots { position: absolute; right: 7%; top: 4.5%; display: flex; gap: 1cqmin; z-index: 1; }
+.hero-stage .dots i { width: 1.8cqmin; height: 1.8cqmin; border-radius: 50%; background: rgb(243 241 234 / .42); }
+.hero-stage .dots i.on { background: var(--sign); }
+.hero-stage .hero-title { position: absolute; left: 7%; right: 7%; top: 12%; color: #F3F1EA; text-shadow: 0 1px 8px rgb(0 0 0 / .5); z-index: 1; }
+.hero-stage .hero-title span { display: block; margin-bottom: .7cqmin; font: 700 3cqmin/1 Barlow; letter-spacing: .45cqmin; text-transform: uppercase; }
+.hero-stage .hero-title b { display: block; font: 400 9.2cqmin/.92 "Instrument Serif", serif; letter-spacing: -.1cqmin; }
+.hero-stage .hero-objs { position: absolute; left: 7%; right: 7%; bottom: 23%; display: flex; gap: 3cqmin; z-index: 1; }
+.hero-stage .ob { flex: 1; min-height: 19cqmin; border-radius: 2cqmin; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.4cqmin; font: 800 3.2cqmin/1 "Barlow Condensed", sans-serif; text-transform: uppercase; letter-spacing: .25cqmin; box-shadow: 0 1.6cqmin 4cqmin rgb(0 0 0 / .38); }
+.hero-stage .ob small { font: 600 2.5cqmin/1 Barlow; letter-spacing: 0; text-transform: none; }
+.hero-stage .ob.p { background: var(--green); color: var(--gold); }
+.hero-stage .ob.v { background: linear-gradient(135deg, #e9eef3, #d6e2ea); color: #213b52; }
+.hero-stage .sg { left: 5%; right: 5%; bottom: 4.5%; z-index: 1; }
+
 /* Passport */
 .stage .ppt {
   position: absolute; width: 30cqmin; aspect-ratio: 5 / 7;
@@ -172,7 +190,7 @@
   box-shadow: 0 -1cqmin 5cqmin rgb(0 0 0 / .18);
 }
 .stage .sheet { left: 7%; right: 7%; top: 10%; bottom: 0; border-radius: 4.4cqmin 4.4cqmin 0 0; padding: 5cqmin 5cqmin 0; }
-.stage .k { display: block; font: 700 max(10px, 2.6cqmin) Barlow; letter-spacing: .45cqmin; text-transform: uppercase; color: #8a7f6a; }
+.stage .k { display: block; font: 700 max(10px, 2.6cqmin) Barlow; letter-spacing: .45cqmin; text-transform: uppercase; color: #5C5348; }
 .stage h3 { margin: 1.4cqmin 0 3cqmin; font: 400 7.4cqmin/1 "Instrument Serif", serif; letter-spacing: 0; }
 .stage .rw { display: flex; justify-content: space-between; gap: 3cqmin; font: 600 max(10px, 3.1cqmin)/2 Barlow; border-bottom: 1px solid #ece4d6; }
 .stage .rw span:last-child { text-align: right; }

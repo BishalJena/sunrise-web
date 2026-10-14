@@ -16,7 +16,7 @@ APP = {
         "line": "#2E2420",
         "ink": "#F3E9DA",
         "muted": "#A3968A",
-        "faint": "#6E625A",
+        "faint": "#A8988C",
         "hairline": "rgb(255 245 230 / .11)",
         "button": "#FFB547",
         "on_button": "#1D1612",
@@ -39,6 +39,7 @@ APP = {
     },
     "icon": {
         "from": "#FFB547", "to": "#FF3B2F",
+        "stroke": "#1D1612",
         # The flame that rides along in the final prototype.
         "glyph": '<path d="M61 24c13 17 1 27 15 39 8 7 11 16 7 26-5 12-16 20-29 20s-25-8-30-20c-5-13 2-28 15-39 8-7 13-16 22-26Z"/><path d="M55 75c-5 7-2 18 7 18 8 0 13-7 10-15-3-7-10-10-11-21-5 7-2 11-6 18Z"/>',
     },

@@ -87,6 +87,7 @@ def theme_css(app):
 
 def icon_svg(app):
     i = app["icon"]
+    stroke = i.get("stroke", "#fff")
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -95,7 +96,7 @@ def icon_svg(app):
     </linearGradient>
   </defs>
   <rect width="120" height="120" rx="27" fill="url(#bg)"/>
-  <g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="{stroke}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
     {i["glyph"]}
   </g>
 </svg>
@@ -118,7 +119,7 @@ def head(app, title, description):
   <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/app-icon.svg">
 {FONTS}{theme_fonts(app)}  <link rel="stylesheet" href="assets/styles.css">
-{'  <link rel="stylesheet" href="assets/art/art.css">' + chr(10) if app.get("art") else ""}  <style>{theme_css(app)}</style>
+{'  <link rel="stylesheet" href="assets/art/art.css">' + chr(10) if app.get("art") or app.get("hero_art") else ""}  <style>{theme_css(app)}</style>
   <script>if (scrollY < 8) document.documentElement.classList.add("nav-top");</script>
 </head>
 '''
@@ -131,6 +132,9 @@ def nav(app, current, on_home):
     items = "\n".join(
         f'        <li><a href="{href}"{" aria-current=\"page\"" if key == current else ""}>{label}</a></li>'
         for href, label, key in links)
+    mobile_items = "\n".join(
+        f'          <li><a href="{href}"{" aria-current=\"page\"" if key == current else ""}>{label}</a></li>'
+        for href, label, key in links)
     cta_href = "#waitlist" if on_home else "index.html#waitlist"
     return f'''  <div class="nav-spacer"></div>
   <header class="nav-wrap">
@@ -142,6 +146,12 @@ def nav(app, current, on_home):
       <ul class="nav-links">
 {items}
       </ul>
+      <details class="mobile-nav">
+        <summary>Menu</summary>
+        <ul>
+{mobile_items}
+        </ul>
+      </details>
       <a class="button" href="{cta_href}">Join waitlist</a>
     </nav>
   </header>
@@ -172,7 +182,7 @@ def waitlist_form(app, source, label="Join the waitlist", center=False):
     return f'''<div class="waitlist-wrap{' center' if center else ''}">
           <form class="waitlist" action="{action}" method="post" data-waitlist data-source="{source}">
             <input type="hidden" name="source" value="{source}">
-            <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+            <label class="hp" aria-hidden="true" inert hidden>Company<input name="company" tabindex="-1" autocomplete="off"></label>
             <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
             <button class="button" type="submit">{esc(label)}</button>
           </form>
@@ -246,6 +256,16 @@ def peek(app, i, f):
           </div>'''
 
 
+def hero_media(app):
+    """Main hero phone contents: custom art when present, else a screenshot."""
+    art = app.get("hero_art")
+    if art:
+        return f'''<div class="hero-stage stage" role="img" aria-label="{esc(app["name"])}: {esc(app["hero_shot"])}">
+{art.strip(chr(10))}
+            </div>'''
+    return shot(app, "hero", app["hero_shot"])
+
+
 def chip(cls, icon, color, title, sub):
     return f'''        <div class="float-chip {cls}" aria-hidden="true">
           <span class="chip-icon icon" style="--c: var(--accent-{color})">{icon}</span>
@@ -278,7 +298,7 @@ def build_index(app):
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="phone">
           <div class="phone-screen has-shot">
-            {shot(app, "hero", app["hero_shot"])}
+            {hero_media(app)}
           </div>
         </div>
 {chips}
@@ -504,21 +524,22 @@ def load_app(slug):
     spec.loader.exec_module(mod)
     app = mod.APP
     app["slug"] = slug
-    app["art"], app["art_fonts"] = load_art(slug)
+    app["art"], app["art_fonts"], app["hero_art"] = load_art(slug)
     return app
 
 
 def load_art(slug):
     """Illustrated card media from art/<slug>/cards.py: CARDS maps a card's
     1-based position to the HTML drawn in place of its phone screenshots, and
-    FONTS lists any extra stylesheet links the scenes need."""
+    FONTS lists any extra stylesheet links the scenes need. HERO can replace
+    the main phone screenshot on the app's home page."""
     path = os.path.join(ART_DIR, slug, "cards.py")
     if not os.path.exists(path):
-        return {}, ()
+        return {}, (), ""
     spec = importlib.util.spec_from_file_location(f"{slug}-art", path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.CARDS, getattr(mod, "FONTS", ())
+    return mod.CARDS, getattr(mod, "FONTS", ()), getattr(mod, "HERO", "")
 
 
 def build(slug):
@@ -529,7 +550,7 @@ def build(slug):
     for name in ("styles.css", "site.js"):
         shutil.copyfile(os.path.join(ASSETS_DIR, name), os.path.join(out, "assets", name))
     shutil.rmtree(os.path.join(out, "assets", "art"), ignore_errors=True)
-    if app["art"]:
+    if app["art"] or app["hero_art"]:
         # Shared stage rules first, then the app's own scenes and images.
         dest = os.path.join(out, "assets", "art")
         shutil.copytree(os.path.join(ART_DIR, slug), dest, ignore=shutil.ignore_patterns("*.py", "__pycache__", "art.css"))

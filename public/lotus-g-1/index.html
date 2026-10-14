@@ -33,6 +33,14 @@
         <li><a href="release-notes.html">Release Notes</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
+      <details class="mobile-nav">
+        <summary>Menu</summary>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="release-notes.html">Release Notes</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </details>
       <a class="button" href="#waitlist">Join waitlist</a>
     </nav>
   </header>
@@ -46,7 +54,7 @@
         <div class="waitlist-wrap">
           <form class="waitlist" action="api/join" method="post" data-waitlist data-source="hero">
             <input type="hidden" name="source" value="hero">
-            <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+            <label class="hp" aria-hidden="true" inert hidden>Company<input name="company" tabindex="-1" autocomplete="off"></label>
             <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
             <button class="button" type="submit">Join the waitlist</button>
           </form>
@@ -318,7 +326,7 @@
         <div class="waitlist-wrap">
           <form class="waitlist" action="api/join" method="post" data-waitlist data-source="cta">
             <input type="hidden" name="source" value="cta">
-            <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+            <label class="hp" aria-hidden="true" inert hidden>Company<input name="company" tabindex="-1" autocomplete="off"></label>
             <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
             <button class="button" type="submit">Join the waitlist</button>
           </form>

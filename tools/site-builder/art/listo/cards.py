@@ -2,6 +2,27 @@
 green passport, yellow luggage tags, dashed outlines for what's missing, the
 red thread, the receipt slip, the airport photos and the yellow pass."""
 
+HERO = '''
+<div class="hero-walk">
+  <img src="assets/art/img/checkin.webp" alt="">
+  <div class="shade"></div>
+  <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+  <div class="hero-title">
+    <span>Walk it · 1 of 3</span>
+    <b>Check-in,<br>Mexico City.</b>
+  </div>
+  <div class="hero-objs">
+    <span class="ob p">Pasaporte<small>valid to 2031</small></span>
+    <span class="ob v">US visa<small>B1/B2</small></span>
+  </div>
+  <div class="sg">
+    <span class="n">1</span>
+    <span><b>They'll ask for</b><small>Passport + US visa (for Houston)</small></span>
+    <span class="st">Ready</span>
+  </div>
+</div>
+'''
+
 CARDS = {
     # Built for restricted passports
     1: '''
