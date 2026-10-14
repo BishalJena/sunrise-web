@@ -308,7 +308,7 @@ def build_index(app):
     <!-- ===================== Features ===================== -->
     <section class="section" id="features">
       <div class="section-head">
-        <span class="eyebrow">Features</span>
+        <span class="eyebrow">{esc(app.get("features_eyebrow", "Features"))}</span>
         <h2 class="section-title">{app["features_title"]}</h2>
       </div>
       <div class="card-grid">
@@ -327,7 +327,7 @@ def build_index(app):
     <!-- ===================== Values ===================== -->
     <section class="section">
       <div class="section-head">
-        <span class="eyebrow">Values</span>
+        <span class="eyebrow">{esc(app.get("values_eyebrow", "Values"))}</span>
         <h2 class="section-title">{esc(app["values_title"])}</h2>
       </div>
       <div class="values">

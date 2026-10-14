@@ -25,7 +25,7 @@ window.APPS = [
   {
     "slug": "kesha",
     "name": "KESHA",
-    "tagline": "Stay awake driving",
+    "tagline": "Stay awake on long drives",
     "url": "/kesha/",
     "icon": "/kesha/assets/app-icon.svg",
     "colors": [
