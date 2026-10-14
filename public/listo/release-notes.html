@@ -29,7 +29,7 @@
   --color-inset: #EFE9DE;
   --color-text-primary: #0B0C0E;
   --color-text-secondary: #5D6470;
-  --color-text-tertiary: #807766;
+  --color-text-tertiary: #5C5348;
   --color-hairline: rgb(11 12 14 / .12);
   --color-brand: #0B0C0E;
   --color-on-brand: #FFD100;
@@ -43,7 +43,7 @@
   --accent-green: #1F3A2E;
   --accent-indigo: #3F4654;
   --accent-mint: #EFE9DE;
-  --accent-orange: #FFD100;
+  --accent-orange: #7A5E00;
   --accent-pink: #B0442E;
   --accent-purple: #8A7F6A;
   --accent-red: #B0442E;
@@ -63,6 +63,14 @@
         <li><a href="release-notes.html" aria-current="page">Release Notes</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
+      <details class="mobile-nav">
+        <summary>Menu</summary>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="release-notes.html" aria-current="page">Release Notes</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </details>
       <a class="button" href="index.html#waitlist">Join waitlist</a>
     </nav>
   </header>
@@ -119,7 +127,7 @@
         <div class="waitlist-wrap center">
           <form class="waitlist" action="api/join" method="post" data-waitlist data-source="release-notes">
             <input type="hidden" name="source" value="release-notes">
-            <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+            <label class="hp" aria-hidden="true" inert hidden>Company<input name="company" tabindex="-1" autocomplete="off"></label>
             <input class="input" type="email" name="email" placeholder="you@example.com" autocomplete="email" aria-label="Email address" required>
             <button class="button" type="submit">Join the waitlist</button>
           </form>

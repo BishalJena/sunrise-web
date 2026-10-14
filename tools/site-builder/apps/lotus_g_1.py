@@ -9,8 +9,9 @@ APP = {
     "brand2": "var(--accent-red)",
     "icon": {
         "from": "#ffb340", "to": "#ff5a36",
+        "stroke": "#1D1612",
         # speedometer arc + needle
-        "glyph": '<path d="M28 78a32 32 0 1 1 64 0"/><path d="M60 78l16-20"/><circle cx="60" cy="78" r="3" fill="#fff"/>',
+        "glyph": '<path d="M28 78a32 32 0 1 1 64 0"/><path d="M60 78l16-20"/><circle cx="60" cy="78" r="3" fill="#1D1612"/>',
     },
     "status": "Launching first in Bali",
     "h1": "Ease off before<br>the camera",
