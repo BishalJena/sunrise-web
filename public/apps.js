@@ -3,7 +3,7 @@ window.APPS = [
   {
     "slug": "bersih",
     "name": "BERSIH",
-    "tagline": "Every photo has two sides",
+    "tagline": "Remove hidden location data from your photos",
     "url": "/bersih/",
     "icon": "/bersih/assets/app-icon.svg",
     "colors": [
@@ -14,7 +14,7 @@ window.APPS = [
   {
     "slug": "hush",
     "name": "HUSH",
-    "tagline": "Check your room before you settle in",
+    "tagline": "Check your room for hidden cameras",
     "url": "/hush/",
     "icon": "/hush/assets/app-icon.svg",
     "colors": [
@@ -36,7 +36,7 @@ window.APPS = [
   {
     "slug": "listo",
     "name": "LISTO",
-    "tagline": "Every trip, laid out",
+    "tagline": "Know every visa and document before you book",
     "url": "/listo/",
     "icon": "/listo/assets/app-icon.svg",
     "colors": [
@@ -47,7 +47,7 @@ window.APPS = [
   {
     "slug": "tldr-news",
     "name": "Underneath",
-    "tagline": "The news without the noise",
+    "tagline": "Checked news you can finish",
     "url": "/tldr-news/",
     "icon": "/tldr-news/assets/app-icon.svg",
     "colors": [
